@@ -4,7 +4,13 @@ import initialState from '../../reducers/initialState';
 export default function (state = initialState.movies, action) {
 	switch (action.type) {
 
-		case types.RETRIEVE_POPULAR_MOVIES_SUCCESS:
+	case types.RETRIVE_SERIES_SUCCESS:
+		return {
+		...state,
+		Series: action.Series
+	};
+
+ 	case types.RETRIEVE_POPULAR_MOVIES_SUCCESS:
 			return {
 				...state,
 				popularMovies: action.popularMovies

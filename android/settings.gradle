@@ -1,4 +1,6 @@
 rootProject.name = 'movieapp'
+include ':react-native-native-video-player'
+project(':react-native-native-video-player').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-native-video-player/android')
 
 include ':app'
 include ':react-native-vector-icons'

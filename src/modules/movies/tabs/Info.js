@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes,Component } from 'react';
 import {
 	Text,
 	View
@@ -9,39 +9,35 @@ import numeral from 'numeral';
 
 import styles from './styles/Info';
 
-const Info = ({ info }) => {
-	const director = _.filter(info.casts.crew, { department: 'Directing', job: 'Director' });
-	const releaseDate = moment(info.release_date).format('LL');
-	const budget = (info.budget === 0 ? 'n/a' : numeral(info.budget).format('$ 0,0'));
+export default class Info extends Component {
+	constructor(props) {
+		super(props)
 
-	return (
-		<View style={styles.container}>
-			<View style={styles.overview}>
-				<Text style={styles.label}>
-					Overview
-				</Text>
-				<Text style={styles.overviewText}>
-					{info.overview}
-				</Text>
-			</View>
-			<View style={styles.labelRow}>
-				<Text style={styles.label}>Release Date</Text>
-				<Text style={styles.value}>{releaseDate}</Text>
-			</View>
-			<View style={styles.labelRow}>
-				<Text style={styles.label}>Directed By</Text>
-				<Text style={styles.value}>{director[0].name}</Text>
-			</View>
-			<View style={styles.labelRow}>
-				<Text style={styles.label}>Budget</Text>
-				<Text style={styles.value}>{budget}</Text>
-			</View>
-		</View>
-	);
-};
+		//alert(JSON.stringify(props.item))
+	}
+  render() {
 
-Info.propTypes = {
-	info: PropTypes.object.isRequired
-};
+				return (
+					<View style={styles.container}>
+						<View style={styles.overview}>
+							<Text style={styles.label}>
+								აღწერა
+							</Text>
+							<Text style={styles.overviewText}>
+							{this.props.item.description}
+							</Text>
+						</View>
 
-export default Info;
+						<View style={styles.labelRow}>
+							<Text style={styles.label}>გამოშვების წელი</Text>
+							<Text style={styles.value}>{this.props.item.release_date}</Text>
+						</View>
+						<View style={styles.labelRow}>
+							<Text style={styles.label}>რეჟისორი</Text>
+							<Text style={styles.value}>{this.props.director}</Text>
+						</View>
+
+					</View>
+				);
+  }
+}

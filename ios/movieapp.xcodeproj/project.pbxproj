@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -50,6 +49,12 @@
 		D2E46A1303DA433F86CEC57E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE294B63E6254D6BB9410B67 /* SimpleLineIcons.ttf */; };
 		DB9E78C131CE480182C0B177 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2F7ED18FD5A4B5BA30E6698 /* Octicons.ttf */; };
 		E2BD0815722E495E95951170 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B248CA3018149E5B5956980 /* libRNVectorIcons.a */; };
+		3374ACBFD4584E798226E735 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF231039118F4BC79BEBF6B7 /* AntDesign.ttf */; };
+		A778B6AA592C4848B64B8926 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D617D9E8E5D465091B0EB73 /* Feather.ttf */; };
+		F23C74B0AA234AD8AFC7086D /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84787E3A043243CEB9DCE37A /* FontAwesome5_Brands.ttf */; };
+		FAF2076391C345F9A12BF499 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 735CB57E26304933B3D9EBD6 /* FontAwesome5_Regular.ttf */; };
+		EB3A9D2B896F442EB0B796CB /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 301A728C7655490CA2049A8A /* FontAwesome5_Solid.ttf */; };
+		17A284C7F34A4FF482034F51 /* libRNVideoPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 863936011BBD4D488A7F1C59 /* libRNVideoPlayer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +319,13 @@
 		F133C8D874914AD6A5B02E8E /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		F573BDF1A49F4687AD51BF15 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		FE294B63E6254D6BB9410B67 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		EF231039118F4BC79BEBF6B7 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9D617D9E8E5D465091B0EB73 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		84787E3A043243CEB9DCE37A /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		735CB57E26304933B3D9EBD6 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		301A728C7655490CA2049A8A /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8D2D6572CB95478383D4E055 /* RNVideoPlayer.xcodeproj */ = {isa = PBXFileReference; name = "RNVideoPlayer.xcodeproj"; path = "../node_modules/react-native-native-video-player/ios/RNVideoPlayer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		863936011BBD4D488A7F1C59 /* libRNVideoPlayer.a */ = {isa = PBXFileReference; name = "libRNVideoPlayer.a"; path = "libRNVideoPlayer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,6 +356,7 @@
 				E2BD0815722E495E95951170 /* libRNVectorIcons.a in Frameworks */,
 				B062F3AFDD4A4D9C98D34298 /* libBVLinearGradient.a in Frameworks */,
 				4EAF077D63AC45EAB45308E7 /* libReactNativeConfig.a in Frameworks */,
+				17A284C7F34A4FF482034F51 /* libRNVideoPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +536,11 @@
 				A2F7ED18FD5A4B5BA30E6698 /* Octicons.ttf */,
 				FE294B63E6254D6BB9410B67 /* SimpleLineIcons.ttf */,
 				735078C2FBA44E97A9F6B9C8 /* Zocial.ttf */,
+				EF231039118F4BC79BEBF6B7 /* AntDesign.ttf */,
+				9D617D9E8E5D465091B0EB73 /* Feather.ttf */,
+				84787E3A043243CEB9DCE37A /* FontAwesome5_Brands.ttf */,
+				735CB57E26304933B3D9EBD6 /* FontAwesome5_Regular.ttf */,
+				301A728C7655490CA2049A8A /* FontAwesome5_Solid.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -563,6 +581,7 @@
 				4486F527828A4B9A93FC367C /* RNVectorIcons.xcodeproj */,
 				966E7F832AD94EC2B32A9D6A /* BVLinearGradient.xcodeproj */,
 				F133C8D874914AD6A5B02E8E /* ReactNativeConfig.xcodeproj */,
+				8D2D6572CB95478383D4E055 /* RNVideoPlayer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1016,6 +1035,11 @@
 				DB9E78C131CE480182C0B177 /* Octicons.ttf in Resources */,
 				D2E46A1303DA433F86CEC57E /* SimpleLineIcons.ttf in Resources */,
 				C3F0CF9DE14B456B857C6D7E /* Zocial.ttf in Resources */,
+				3374ACBFD4584E798226E735 /* AntDesign.ttf in Resources */,
+				A778B6AA592C4848B64B8926 /* Feather.ttf in Resources */,
+				F23C74B0AA234AD8AFC7086D /* FontAwesome5_Brands.ttf in Resources */,
+				FAF2076391C345F9A12BF499 /* FontAwesome5_Regular.ttf in Resources */,
+				EB3A9D2B896F442EB0B796CB /* FontAwesome5_Solid.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1145,12 +1169,14 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = movieappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1179,12 +1205,14 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = movieappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1215,6 +1243,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = movieapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1241,6 +1270,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = movieapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1272,11 +1302,13 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = "movieapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1310,11 +1342,13 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
+					"$(SRCROOT)/../node_modules/react-native-native-video-player/ios/RNVideoPlayer",
 				);
 				INFOPLIST_FILE = "movieapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1349,6 +1383,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.movieapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1373,6 +1408,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

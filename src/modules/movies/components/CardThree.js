@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/*  eslint-disable new-cap */
 import React, { PropTypes, Component } from 'react';
 import {
 	Image,
@@ -18,33 +18,68 @@ class CardThree extends Component {
 
 	constructor(props) {
 		super(props);
-	}
+		//alert(this.props.info.id)
 
+		this.state = {
+			genres:"",
+			des:""
+		}
+
+
+
+                          fetch("http://net.adjara.com/req/jsondata/req.php?id=" + this.props.info.id + "&reqId=getInfo")
+                              .then(res => res.json())
+                              .then(res => {
+                         let genres = Object.keys(res.genres).map(i => res.genres[i])
+                         let director = Object.keys(res.director).map(i => res.director[i]);
+							        	this.setState({genres})
+
+                         this.setState({des: res.desc[0]})
+
+
+
+   })
+
+	}
+ checkTitle(data) {
+		 if (data.title_ge !== "") {
+				 return (data.title_ge);
+		 } else {
+				 return (data.title_en);
+		 }
+ }
 	render() {
-		const { info, viewMovie } = this.props;
+		const { info, viewMovie,searching } = this.props;
 		return (
 			<View style={styles.cardContainer}>
-				<TouchableOpacity activeOpacity={0.9} onPress={viewMovie.bind(this, info.id)}>
+				<TouchableOpacity activeOpacity={0.9} onPress={() => {viewMovie(info,this.state.des,this.state.genres) }}>
 					<View style={styles.card}>
-						<Image source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }} style={styles.cardImage} />
+						<Image source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + info.id + "/covers/214x321-" + info.id + ".jpg"):(info.poster) }} style={styles.cardImage} />
 						<View style={styles.cardDetails}>
 							<Text
 								style={styles.cardTitle}
 								numberOfLines={3}>
-								{info.original_title}
+								{this.checkTitle(info)}
 							</Text>
 							<View style={styles.cardGenre}>
-								<Text style={styles.cardGenreItem}>{info.release_date.substring(0, 4)}</Text>
+								<Text style={styles.cardGenreItem}>{info.year}</Text>
 							</View>
 							<View style={styles.cardNumbers}>
-								<View style={styles.cardStar}>
-									{iconStar}
-									<Text style={styles.cardStarRatings}>{info.vote_average.toFixed(1)}</Text>
-								</View>
-								<Text style={styles.cardRunningHours} />
+							{
+								searching?(
+							<View />
+
+								):(
+<View style={styles.cardStar}>
+	{iconStar}
+	<Text style={styles.cardStarRatings}>{info.imdb}</Text>
+</View>
+
+								)
+							}
 							</View>
 							<Text style={styles.cardDescription} numberOfLines={3}>
-								{info.overview}
+								{this.state.des}
 							</Text>
 						</View>
 					</View>
@@ -53,11 +88,6 @@ class CardThree extends Component {
 		);
 	}
 }
-
-CardThree.propTypes = {
-	info: PropTypes.object.isRequired,
-	viewMovie: PropTypes.func.isRequired
-};
 
 function mapStateToProps(state, ownProps) {
 	return {

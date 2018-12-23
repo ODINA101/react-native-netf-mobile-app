@@ -6,7 +6,8 @@ import {
 	ScrollView,
 	Text,
 	ToastAndroid,
-	View
+	View,
+	TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,7 +16,7 @@ import Swiper from 'react-native-swiper';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import SwitchSelector from 'react-native-switch-selector';
 import * as moviesActions from './movies.actions';
 import Casts from './tabs/Casts';
 import DefaultTabBar from '../_global/scrollableTabView/DefaultTabBar';
@@ -23,8 +24,10 @@ import Info from './tabs/Info';
 import ProgressBar from '../_global/ProgressBar';
 import Trailers from './tabs/Trailers';
 import styles from './styles/Movie';
+import VideoPlayer from "react-native-native-video-player"
 import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api';
-
+	const apiKey = '9d2bff12ed955c7f1f74b83187f188ae'
+	import Modal from "react-native-modal";
 class Movie extends Component {
 	constructor(props) {
 		super(props);
@@ -38,13 +41,26 @@ class Movie extends Component {
 			showSimilarMovies: true,
 			trailersTabHeight: null,
 			tab: 0,
-			youtubeVideos: []
+			youtubeVideos: [],
+			genres:[],
+			Directed:"",
+			link:"",
+			ShowModal:false,
+			QOptions:[
+			    { label: 'ქართული', value: '1' },
+			    { label: 'ინგლისური', value: '1.5' },
+			    { label: 'რუსული', value: '2' }
+			],
+			selectedLang:"",
+			Quality_Options:[],
+			selectedQual:""
+
 		};
 
 		this._getTabHeight = this._getTabHeight.bind(this);
 		this._onChangeTab = this._onChangeTab.bind(this);
 		this._onContentSizeChange = this._onContentSizeChange.bind(this);
-		this._onRefresh = this._onRefresh.bind(this);
+		this._onRefresh = this._onRefresh.bind(this)
 		this._onScroll = this._onScroll.bind(this);
 		this._viewMovie = this._viewMovie.bind(this);
 		this._openYoutube = this._openYoutube.bind(this);
@@ -53,17 +69,78 @@ class Movie extends Component {
 
 	componentWillMount() {
 		this._retrieveDetails();
+
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.details) this.setState({ isLoading: false });
-	}
+	getq(data) {
+     if(data > 1000) {
+       return "HD"
+     }else{
+       return "SD"
+     }
+
+   }
 
 	_retrieveDetails(isRefreshed) {
-		this.props.actions.retrieveMovieDetails(this.props.movieId)
-			.then(() => {
-				this._retrieveYoutubeDetails();
-			});
+		// this.props.actions.retrieveMovieDetails(this.props.movieId)
+		// 	.then(() => {
+		// 	//	this._retrieveYoutubeDetails();
+
+		//	});
+
+		fetch("http://net.adjara.com/req/jsondata/req.php?id=" + this.props.item.id + "&reqId=getInfo")
+							.then(res => res.json())
+							.then(res => {
+										let genres = Object.keys(res.genres).map(i => res.genres[i])
+										let director = Object.keys(res.director).map(i => res.director[i]);
+										if(director.length > 0) {
+											this.setState({Directed:director[0]})
+
+										}
+										this.setState({genres})
+										fetch(
+			     		"http://net.adjara.com/req/jsondata/req.php?id=" + this.props.item.id +
+				     	"&reqId=getLangAndHd"
+		        	)
+		        	.then(res => res.json())
+		         	.then(res => {
+								  let actors = [];
+								var info = Object
+							             .keys(res)
+							             .map(i => res[i])
+
+							              var noption = info[0].lang.split(",")
+														var noquality =  info[0].quality.split(",")
+													//	alert(JSON.stringify(noption))
+                            let nores = [];
+                            let noqures = [];
+
+
+                              noption.map((item) => {
+																nores.push({label:item,value:item})
+															})
+															noquality.map((item) => {
+	                             noqures.push({label:this.getq(item),value:item})
+                              })
+
+
+							                 this.setState({QOptions: nores, link: info[0].url,selectedLang:noption[0],Quality_Options:noqures,selectedQual:noquality[0]})
+							                 Object
+							                 .keys(res.cast)
+							                 .map(async (item) => {
+							                     actors.push({id:item,name:res.cast[item]})
+							                 })
+							              this.setState({actors, link: info[0].url})
+
+																		this.setState({ isLoading: false });
+
+
+
+
+
+             });
+
+							});
 		if (isRefreshed && this.setState({ isRefreshing: false }));
 	}
 
@@ -109,17 +186,7 @@ class Movie extends Component {
 	}
 
 	_retrieveYoutubeDetails() {
-		this.props.details.videos.results.map(item => {
-			const request = axios.get(`${YOUTUBE_URL}/?id=${item.key}&key=${YOUTUBE_API_KEY}&part=snippet`)
-								.then(res => {
-									const data = this.state.youtubeVideos;
-									data.push(res.data.items[0]);
-								})
-								.catch(error => {
-									console.log(error); //eslint-disable-line
-								});
-			return request;
-		});
+
 	}
 
 	_viewMovie(movieId) {
@@ -129,6 +196,11 @@ class Movie extends Component {
 				movieId
 			}
 		});
+	}
+
+
+  playMovie(item) {
+		VideoPlayer.showVideoPlayer(this.state.link + item.id + "_" + this.state.selectedLang + "_" + this.state.selectedQual + ".mp4")
 	}
 
 	_openYoutube(youtubeUrl) {
@@ -148,12 +220,28 @@ class Movie extends Component {
 			}
 		}
 	}
+	checkTitle(data) {
+ 		 if (data.title_ge !== "") {
+ 				 return (data.title_ge);
+ 		 } else {
+ 				 return (data.title_en);
+ 		 }
+  }
+
+	checkImdb(data) {
+        if ((parseFloat(data.data_rating).toFixed(1)) !== parseFloat(0.0).toFixed(1)) {
+            return (data.data_rating);
+        } else {
+            return (null);
+        }
+    }
 
 	render() {
 		const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
 		const { details } = this.props;
+		const {item,searching} = this.props;
 		const info = details;
-
+		const options = this.state.QOptions;
 		let height;
 		if (this.state.tab === 0) height = this.state.infoTabHeight;
 		if (this.state.tab === 1) height = this.state.castsTabHeight;
@@ -177,41 +265,81 @@ class Movie extends Component {
 							progressBackgroundColor="white"
 						/>
 					}>
+
+						<Modal animationIn="zoomInDown"
+          animationOut="zoomOutUp"
+          animationInTiming={1000}
+          animationOutTiming={1000}
+          backdropTransitionInTiming={1000}
+          backdropTransitionOutTiming={1000}
+					isVisible={this.state.ShowModal} >
+					<View style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'}}>
+    <View style={{
+						backgroundColor:"#FFF",
+            width: 300,
+            height: 300,
+						alignItems: 'center',
+					 padding:15}}>
+						<Text style={{color:"#000",marginTop:20}}>აირჩიე ენა</Text>
+						<SwitchSelector options={options} initial={0} onPress={value => this.setState({selectedLang:value})} />
+
+						<Text style={{color:"#000",marginTop:30}}>აირჩიე ხარისხი</Text>
+<SwitchSelector options={this.state.Quality_Options} initial={0} onPress={value => this.setState({selectedQual:value})} />
+			<View style={{marginTop:50,flexDirection: 'row'}}>
+			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#6A98E3",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
+		<Text style={{color:"#FFF"}} >დახურვა</Text>
+		</TouchableOpacity>
+    <View style={{width:10}}/>
+			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:30,width:110,backgroundColor:"#DE8F8D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
+			<Text style={{color:"#FFF"}}>კარგი</Text>
+			</TouchableOpacity>
+     </View>
+
+    </View>
+	  </View>
+						</Modal>
 				<View style={{ height }}>
-					<Swiper
-						style={styles.swiper}
-						autoplay
-						autoplayTimeout={4}
-						showsPagination={false}
-						height={248}
-						loop
-						index={5}>
-						{
-							info.images.backdrops.map((item, index) => (
-								<View key={index}>
-									<Image source={{ uri: `${TMDB_IMG_URL}/w780/${(item.file_path)}` }} style={styles.imageBackdrop} />
+													<View>
+									<Image  blurRadius={2}   source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + info.id + "/covers/214x321-" + info.id + ".jpg"):(item.poster) }} style={styles.imageBackdrop} />
+
 									<LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} />
+									<TouchableOpacity style={{width:50,height:50,position: 'absolute',top:100,alignSelf: 'center'}} onPress={() => {
+										//
+										//
+                     this.setState({ShowModal:true})
+																	}} >
+																	<Icon  size={50} color="#FFF"  name="md-play"/>
+																	</TouchableOpacity>
 								</View>
-							))
-						}
-					</Swiper>
+
 					<View style={styles.cardContainer}>
-						<Image source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }} style={styles.cardImage} />
+						<Image source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + info.id + "/covers/214x321-" + info.id + ".jpg"):(item.poster)}} style={styles.cardImage} />
 						<View style={styles.cardDetails}>
-							<Text style={styles.cardTitle}>{info.original_title}</Text>
-							<Text style={styles.cardTagline}>{info.tagline}</Text>
+							<Text style={styles.cardTitle}>{this.checkTitle(item)}</Text>
+							<Text style={styles.cardTagline}></Text>
 							<View style={styles.cardGenre}>
 								{
-									info.genres.map(item => (
-										<Text key={item.id} style={styles.cardGenreItem}>{item.name}</Text>
-									))
+								 	this.state.genres.map(item => (
+							 		<Text key={item.id} style={styles.cardGenreItem}>{item}</Text>
+							  	))
 								}
 							</View>
 							<View style={styles.cardNumbers}>
-								<View style={styles.cardStar}>
-									{iconStar}
-									<Text style={styles.cardStarRatings}>8.9</Text>
-								</View>
+							{
+								searching?(
+									<View />
+								):(
+									<View style={styles.cardStar}>
+	               {iconStar}
+	             <Text style={styles.cardStarRatings}>{this.checkImdb(item)}</Text>
+                 </View>
+
+								)
+							}
 								<Text style={styles.cardRunningHours} />
 							</View>
 						</View>
@@ -226,9 +354,9 @@ class Movie extends Component {
 									style={styles.tabBar}
 								/>
 							)}>
-							<Info tabLabel="INFO" info={info} />
-							<Casts tabLabel="CASTS" info={info} getTabHeight={this._getTabHeight} />
-							<Trailers tabLabel="TRAILERS" youtubeVideos={this.state.youtubeVideos} openYoutube={this._openYoutube} getTabHeight={this._getTabHeight} />
+							<Info tabLabel="INFO" item={item} director={this.state.Directed} />
+							<Casts tabLabel="CASTS"  actors={this.state.actors} getTabHeight={this._getTabHeight} />
+							<Trailers tabLabel="TRAILERS" item={this.props.item} youtubeVideos={this.state.youtubeVideos} openYoutube={this._openYoutube} getTabHeight={this._getTabHeight} />
 						</ScrollableTabView>
 					</View>
 				</View>
@@ -246,12 +374,6 @@ Movie.navigatorStyle = {
 	navBarButtonColor: 'white'
 };
 
-Movie.propTypes = {
-	actions: PropTypes.object.isRequired,
-	details: PropTypes.object.isRequired,
-	navigator: PropTypes.object,
-	movieId: PropTypes.number.isRequired
-};
 
 function mapStateToProps(state, ownProps) {
 	return {

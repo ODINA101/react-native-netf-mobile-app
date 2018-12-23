@@ -38,14 +38,20 @@ class Movies extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.nowPlayingMovies && nextProps.popularMovies) {
-			this.setState({ isLoading: false });
-		}
 	}
 
 	_retrieveMovies(isRefreshed) {
-		this.props.actions.retrieveNowPlayingMovies();
-		this.props.actions.retrievePopularMovies();
+		let p = this;
+		this.props.actions.retrieveNowPlayingMovies("test",function(){
+			p.props.actions.retrievePopularMovies("test",function(){
+			p.props.actions.retrieveSeries(function() {
+				p.setState({isLoading:false})
+
+			})
+
+			})
+
+		});
 		if (isRefreshed && this.setState({ isRefreshing: false }));
 	}
 
@@ -72,22 +78,49 @@ class Movies extends Component {
 		});
 	}
 
-	_viewMovie(movieId) {
-		this.props.navigator.showModal({
-			screen: 'movieapp.Movie',
-			passProps: {
-				movieId
-			},
-			backButtonHidden: true,
-			navigatorButtons: {
-				rightButtons: [
-					{
-						id: 'close',
-						icon: iconsMap['ios-arrow-round-down']
-					}
-				]
+	_viewMovie(movieId,info) {
+		fetch(`http://net.adjara.com/req/jsondata/req.php?id=${info.id}&reqId=getInfo`)
+		  .then(res => res.json())
+		  .then(res => {
+			if (res['1']) {
+				console.log('serialia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Serie',
+		 			passProps: {
+		 				movieId,
+		 				item:info
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
+			} else {
+				console.log('filmia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Movie',
+		 			passProps: {
+		 				movieId,
+		 				item:info
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
 			}
 		});
+
 	}
 
 	_onRefresh() {
@@ -120,7 +153,7 @@ class Movies extends Component {
 	}
 
 	render() {
-		const { nowPlayingMovies, popularMovies } = this.props;
+		const { nowPlayingMovies, popularMovies,Series } = this.props;
 		const iconPlay = <Icon name="md-play" size={21} color="#9F9F9F" style={{ paddingLeft: 3, width: 22 }} />;
 		const iconTop = <Icon name="md-trending-up" size={21} color="#9F9F9F" style={{ width: 22 }} />;
 		const iconUp = <Icon name="md-recording" size={21} color="#9F9F9F" style={{ width: 22 }} />;
@@ -145,38 +178,64 @@ class Movies extends Component {
 					autoplayTimeout={4}
 					showsPagination={false}
 					height={248}>
-					{nowPlayingMovies.results.map(info => (
-						<CardOne key={info.id} info={info} viewMovie={this._viewMovie} />
+					{nowPlayingMovies.map(info => (
+						<CardOne key={info.id} info={info}  viewMovie={() => this._viewMovie(info.id,info)} />
 					))}
 				</Swiper>
 				<View>
 					<View style={styles.listHeading}>
-						<Text style={styles.listHeadingLeft}>Popular</Text>
+						<Text style={styles.listHeadingLeft}>ფილმები ქართულად</Text>
 						<TouchableOpacity>
 							<Text
 								style={styles.listHeadingRight}
-								onPress={this._viewMoviesList.bind(this, 'popular', 'Popular')}>
-								See all
+								onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'ფილმები ქართულად')}>
+								ყველა
 							</Text>
 						</TouchableOpacity>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{popularMovies.results.map(info => (
-							<CardTwo key={info.id} info={info} viewMovie={this._viewMovie} />
+						{nowPlayingMovies.map(info => (
+							<CardTwo key={info.id} info={info} viewMovie={() => this._viewMovie(info.id,info)} />
 						))}
 					</ScrollView>
+
+
+					<View style={styles.listHeading}>
+					<Text style={styles.listHeadingLeft}>სერიალები ქართულად</Text>
+					<TouchableOpacity>
+						<Text
+							style={styles.listHeadingRight}
+							onPress={this._viewMoviesList.bind(this, 'სერიალები ქართულად', 'სერიალები ქართულად')}>
+             ყველა
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+					{Series.map(info => (
+						<CardTwo key={info.id} info={info} viewMovie={this._viewMovie} />
+					))}
+				</ScrollView>
+
+
+									<View style={styles.listHeading}>
+									<Text style={styles.listHeadingLeft}>პოპულარული</Text>
+									<TouchableOpacity>
+										<Text
+											style={styles.listHeadingRight}
+											onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'Movies')}>
+											ყველა
+										</Text>
+									</TouchableOpacity>
+								</View>
+								<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+									{popularMovies.map(info => (
+										<CardTwo key={info.id} info={info} viewMovie={this._viewMovie} />
+									))}
+								</ScrollView>
+
+
 					<View style={styles.browseList}>
-						<TouchableOpacity activeOpacity={0.7}>
-							<View style={styles.browseListItem}>
-								{iconPlay}
-								<Text
-									style={styles.browseListItemText}
-									onPress={this._viewMoviesList.bind(this, 'now_playing', 'Now Playing')}>
-									Now Playing
-								</Text>
-							</View>
-						</TouchableOpacity>
-						<TouchableOpacity activeOpacity={0.7}>
+											<TouchableOpacity activeOpacity={0.7}>
 							<View style={styles.browseListItem}>
 								{iconTop}
 								<Text style={styles.browseListItemText} onPress={this._viewMoviesList.bind(this, 'top_rated', 'Top Rated')}>
@@ -201,17 +260,12 @@ class Movies extends Component {
 	}
 }
 
-Movies.propTypes = {
-	actions: PropTypes.object.isRequired,
-	nowPlayingMovies: PropTypes.object.isRequired,
-	popularMovies: PropTypes.object.isRequired,
-	navigator: PropTypes.object
-};
 
 function mapStateToProps(state, ownProps) {
 	return {
 		nowPlayingMovies: state.movies.nowPlayingMovies,
-		popularMovies: state.movies.popularMovies
+		popularMovies: state.movies.popularMovies,
+		Series:state.movies.Series
 	};
 }
 

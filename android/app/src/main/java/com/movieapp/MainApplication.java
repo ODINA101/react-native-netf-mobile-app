@@ -5,6 +5,7 @@ import android.util.Log;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.wog.videoplayer.VideoPlayerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -30,9 +31,10 @@ public class MainApplication extends NavigationApplication {
   //   protected List<ReactPackage> getPackages() {
   //     return Arrays.<ReactPackage>asList(
   //         new MainReactPackage(),
+
   //     );
   //   }
-  // };
+   //};
   @Override
   public boolean isDebug() {
     return BuildConfig.DEBUG;
@@ -44,7 +46,8 @@ public class MainApplication extends NavigationApplication {
     return Arrays.<ReactPackage>asList(
 		new VectorIconsPackage(),
 		new LinearGradientPackage(),
-		new ReactNativeConfigPackage()
+		new ReactNativeConfigPackage(),
+     new VideoPlayerPackage()
     );
   }
 

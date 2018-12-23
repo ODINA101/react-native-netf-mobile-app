@@ -39,66 +39,108 @@ class Search extends Component {
 
 		setTimeout(() => {
 			if (query.length) {
-				this.props.actions.retrieveMoviesSearchResults(this.state.query, 1)
-				.then(() => {
-					const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-					const dataSource = ds.cloneWithRows(this.props.searchResults.results);
-					this.setState({
-						dataSource,
-						isLoading: false
+				axios.get(`http://net.adjara.com/Home/quick_search?ajax=1&search=${this.state.query}`)
+					.then(res => {
+						//alert(res.data)
+						const data = [];
+						const newData = res.data.movies.data;
+						const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+						const dataSource = ds.cloneWithRows(res.data.movies.data);
+
+			 //			newData.map((item, index) => data.push(item));
+                console.log(res.data.data)
+						this.setState({
+							dataSource,
+							isLoading:false
+						});
+
+
+						//alert(JSON.stringify(res.data))
+					}).catch(err => {
+						console.log('next page', err); // eslint-disable-line
+						alert(err)
 					});
-				});
+
 			}
 		}, 500);
 	}
 
 	_retrieveNextPage() {
-		if (this.state.currentPage !== this.props.searchResults.total_pages) {
-			this.setState({
-				currentPage: this.state.currentPage + 1
-			});
-
-			let page;
-			if (this.state.currentPage === 1) {
-				page = 2;
-				this.setState({ currentPage: 2 });
-			} else {
-				page = this.state.currentPage + 1;
-			}
-
-			axios.get(`${TMDB_URL}/search/movie/?api_key=${TMDB_API_KEY}&query=${this.state.query}&page=${page}`)
-				.then(res => {
-					const data = this.state.searchResults.results;
-					const newData = res.data.results;
-
-					newData.map((item, index) => data.push(item));
-
-					this.setState({
-						dataSource: this.state.dataSource.cloneWithRows(this.state.searchResults.results)
-					});
-				}).catch(err => {
-					console.log('next page', err); // eslint-disable-line
-				});
-		}
+		// if (this.state.currentPage !== this.props.searchResults.total_pages) {
+		// 	this.setState({
+		// 		currentPage: this.state.currentPage + 1
+		// 	});
+		// 	let page;
+		// 	if (this.state.currentPage === 1) {
+		// 		page = 2;
+		// 		this.setState({ currentPage: 2 });
+		// 	} else {
+		// 		page = this.state.currentPage + 1;
+		// 	}
+		// 	axios.get(`http://net.adjara.com/Home/quick_search?ajax=1&search=&query=${this.state.query}`)
+		// 		.then(res => {
+		// 			const data = [];
+		// 			const newData = res.data.data;
+		//
+		// 			newData.map((item, index) => data.push(item));
+		//
+		// 			this.setState({
+		// 				dataSource: this.state.dataSource.cloneWithRows(res.data.data)
+		// 			});
+		// 			alert("retived" + this.state.dataSource)
+		// 		}).catch(err => {
+		// 			console.log('next page', err); // eslint-disable-line
+		// 		});
+		// }
 	}
 
-	_viewMovie(movieId) {
-		this.props.navigator.push({
-			screen: 'movieapp.Movie',
-			passProps: {
-				movieId
-			},
-			backButtonHidden: true,
-			navigatorButtons: {
-				rightButtons: [
-					{
-						id: 'close',
-						icon: iconsMap['ios-arrow-round-down']
-					}
-				]
+	_viewMovie(movieId,info,des) {
+		fetch(`http://net.adjara.com/req/jsondata/req.php?id=${info.id}&reqId=getInfo`)
+		  .then(res => res.json())
+		  .then(res => {
+			if (res['1']) {
+				console.log('serialia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Serie',
+		 			passProps: {
+		 				movieId,
+		 				item:Object.assign(info,{description:des}),
+						searching:true
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
+			} else {
+				console.log('filmia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Movie',
+		 			passProps: {
+		 				movieId,
+		 				item:Object.assign(info,{description:des}),
+						searching:true
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
 			}
 		});
+
 	}
+
 
 	_onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
@@ -117,7 +159,7 @@ class Search extends Component {
 					onEndReached={type => this._retrieveNextPage()}
 					onEndReachedThreshold={1200}
 					dataSource={this.state.dataSource}
-					renderRow={rowData => <CardThree info={rowData} viewMovie={this._viewMovie} />}
+					renderRow={(rowData,ind) => <CardThree searching={true} info={rowData} viewMovie={(data,des) => {this._viewMovie(data.id,data,des)}} />}
 					renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
 				/>
 			);
@@ -149,12 +191,6 @@ class Search extends Component {
 		);
 	}
 }
-
-Search.propTypes = {
-	actions: PropTypes.object.isRequired,
-	searchResults: PropTypes.object.isRequired,
-	navigator: PropTypes.object
-};
 
 Search.navigatorStyle = {
 	statusBarColor: 'black',

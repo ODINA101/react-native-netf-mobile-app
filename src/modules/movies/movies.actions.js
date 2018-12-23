@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as types from '../../constants/actionTypes';
 import { TMDB_URL, TMDB_API_KEY } from '../../constants/api';
-
+axios.defaults.headers['Referer'] = 'http://net.adjara.com/Search';
 // GENRES
 export function retrieveMoviesGenresSuccess(res) {
 	return {
@@ -10,9 +10,15 @@ export function retrieveMoviesGenresSuccess(res) {
 	};
 }
 
+
+
+
+
+
 export function retrieveMoviesGenres() {
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/genre/movie/list?api_key=${TMDB_API_KEY}`)
+
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0`)
 		.then(res => {
 			dispatch(retrieveMoviesGenresSuccess(res));
 		})
@@ -30,17 +36,25 @@ export function retrievePopularMoviesSuccess(res) {
 	};
 }
 
-export function retrievePopularMovies(page) {
+export function retrievePopularMovies(page,cb) {
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/movie/popular?api_key=${TMDB_API_KEY}&page=${page}`)
+		return axios.get("http://net.adjara.com/cache/cached_home_premiere.php?type=premiere&order=new&period=week&limit=25")
 		.then(res => {
 			dispatch(retrievePopularMoviesSuccess(res));
+			cb(res.data)
 		})
-		.catch(error => {
-			console.log('Popular', error); //eslint-disable-line
+		.catch(errr => {
+		//	alert(JSON.stringify(errr))
+			//console.log('Popular', error); //eslint-disable-line
+		//	alert(error)
 		});
 	};
 }
+
+
+
+
+
 
 // NOW PLAYING
 export function retrieveNowPlayingMoviesSuccess(res) {
@@ -50,17 +64,73 @@ export function retrieveNowPlayingMoviesSuccess(res) {
 	};
 }
 
-export function retrieveNowPlayingMovies(page) {
+
+
+
+
+export function retrieveNowPlayingMovies(page,cb) {
+
+ if(page == "სერიალები ქართულად") {
+	 return function (dispatch) {
+ return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=16&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=data&order%5Bdata%5D=published&language=false&country=false&game=0&softs=0&episode=1&trailers=0&tvshow=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&flashgames=0`)
+ .then(res => {
+	 dispatch(retrieveNowPlayingMoviesSuccess(res.data));
+	 cb()
+ })
+ .catch(error => {
+	 //alert(error)
+ });
+};
+
+
+ }else{
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/movie/now_playing?api_key=${TMDB_API_KEY}&page=${page}`)
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0`)
 		.then(res => {
-			dispatch(retrieveNowPlayingMoviesSuccess(res));
+			dispatch(retrieveNowPlayingMoviesSuccess(res.data));
+			cb()
 		})
 		.catch(error => {
-			console.log('Now Playing', error); //eslint-disable-line
+			//alert(error)
+		});
+	};
+ }
+}
+
+
+export function retrieveSeriesSuccess(res) {
+	return {
+		type: types.RETRIVE_SERIES_SUCCESS,
+		Series: res.data
+	};
+}
+
+export function retrieveSeries(cb) {
+	return function (dispatch) {
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=16&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=data&order%5Bdata%5D=published&language=false&country=false&game=0&softs=0&episode=1&trailers=0&tvshow=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&flashgames=0`)
+		.then(res => {
+			dispatch(retrieveSeriesSuccess(res.data));
+			cb()
+		})
+		.catch(error => {
+	 //	alert(error)
 		});
 	};
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // MOVIES LIST
 export function retrieveMoviesListSuccess(res) {
@@ -71,10 +141,11 @@ export function retrieveMoviesListSuccess(res) {
 }
 
 export function retrieveMoviesList(type, page) {
+
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/movie/${type}?api_key=${TMDB_API_KEY}&page=${page}`)
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0`)
 		.then(res => {
-			dispatch(retrieveMoviesListSuccess(res));
+			dispatch(retrieveMoviesListSuccess(res.data));
 		})
 		.catch(error => {
 			console.log('Movies List', error); //eslint-disable-line
@@ -92,9 +163,9 @@ export function retrieveMoviesSearchResultsSuccess(res) {
 
 export function retrieveMoviesSearchResults(query, page) {
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${query}&page=${page}`)
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0`)
 		.then(res => {
-			dispatch(retrieveMoviesSearchResultsSuccess(res));
+			dispatch(retrieveMoviesSearchResultsSuccess(res.data));
 		})
 		.catch(error => {
 			console.log('Movies Search Results', error); //eslint-disable-line
@@ -112,7 +183,7 @@ export function retrieveMovieDetailsSuccess(res) {
 
 export function retrieveMovieDetails(movieId) {
 	return function (dispatch) {
-		return axios.get(`${TMDB_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=casts,images,videos`)
+		return axios.get(`http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0`)
 		.then(res => {
 			dispatch(retrieveMovieDetailsSuccess(res));
 		})

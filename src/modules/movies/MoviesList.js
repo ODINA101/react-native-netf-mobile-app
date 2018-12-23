@@ -24,9 +24,7 @@ class MoviesList extends Component {
 			isLoading: true,
 			isRefreshing: false,
 			currentPage: 1,
-			list: {
-				results: []
-			}
+			list:[]
 		};
 
 		this._viewMovie = this._viewMovie.bind(this);
@@ -39,10 +37,10 @@ class MoviesList extends Component {
 	}
 
 	_retrieveMoviesList(isRefreshed) {
-		this.props.actions.retrieveMoviesList(this.props.type, this.state.currentPage)
+		this.props.actions.retrieveNowPlayingMovies(this.props.type, this.state.currentPage)
 			.then(() => {
 				const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-				const dataSource = ds.cloneWithRows(this.props.list.results);
+				const dataSource = ds.cloneWithRows(this.props.list);
 				this.setState({
 					list: this.props.list,
 					dataSource,
@@ -53,51 +51,78 @@ class MoviesList extends Component {
 	}
 
 	_retrieveNextPage(type) {
-		if (this.state.currentPage !== this.props.list.total_pages) {
+//		if (this.state.currentPage !== this.props.list.len) {
 			this.setState({
-				currentPage: this.state.currentPage + 1
+				currentPage: this.state.currentPage + 15
 			});
 
 			let page;
-			if (this.state.currentPage === 1) {
-				page = 2;
-				this.setState({ currentPage: 2 });
+			if (this.state.currentPage === 0) {
+				page = 15;
+				this.setState({ currentPage: 15 });
 			} else {
-				page = this.state.currentPage + 1;
+				page = this.state.currentPage + 15;
 			}
 
-			axios.get(`${TMDB_URL}/movie/${type}?api_key=${TMDB_API_KEY}&page=${page}`)
+			axios.get("http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=" + page + "&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0")
 				.then(res => {
-					const data = this.state.list.results;
-					const newData = res.data.results;
+					const data = this.state.list;
+					const newData = res.data.data;
 
 					newData.map((item, index) => data.push(item));
 
 					this.setState({
-						dataSource: this.state.dataSource.cloneWithRows(this.state.list.results)
+						dataSource: this.state.dataSource.cloneWithRows(this.state.list)
 					});
 				}).catch(err => {
 					console.log('next page', err); // eslint-disable-line
 				});
-		}
+	//	}
 	}
 
-	_viewMovie(movieId) {
-		this.props.navigator.showModal({
-			screen: 'movieapp.Movie',
-			passProps: {
-				movieId
-			},
-			backButtonHidden: true,
-			navigatorButtons: {
-				rightButtons: [
-					{
-						id: 'close',
-						icon: iconsMap['ios-arrow-round-down']
-					}
-				]
+	_viewMovie(movieId,info) {
+		fetch(`http://net.adjara.com/req/jsondata/req.php?id=${info.id}&reqId=getInfo`)
+		  .then(res => res.json())
+		  .then(res => {
+			if (res['1']) {
+				console.log('serialia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Serie',
+		 			passProps: {
+		 				movieId,
+		 				item:info
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
+			} else {
+				console.log('filmia');
+				this.props.navigator.showModal({
+		 			screen: 'movieapp.Movie',
+		 			passProps: {
+		 				movieId,
+		 				item:info
+		 			},
+		 			backButtonHidden: true,
+		 			navigatorButtons: {
+		 				rightButtons: [
+		 					{
+		 						id: 'close',
+		 						icon: iconsMap['ios-arrow-round-down']
+		 					}
+		 				]
+		 			}
+		 		});
 			}
 		});
+
 	}
 
 	_onRefresh() {
@@ -122,7 +147,7 @@ class MoviesList extends Component {
 				onEndReached={type => this._retrieveNextPage(this.props.type)}
 				onEndReachedThreshold={1200}
 				dataSource={this.state.dataSource}
-				renderRow={rowData => <CardThree info={rowData} viewMovie={this._viewMovie} />}
+				renderRow={rowData => <CardThree info={rowData} viewMovie={() => {this._viewMovie(rowData.id,rowData)}} />}
 				renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
 				renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}
 				refreshControl={
@@ -140,13 +165,6 @@ class MoviesList extends Component {
 		);
 	}
 }
-
-MoviesList.propTypes = {
-	actions: PropTypes.object.isRequired,
-	list: PropTypes.object.isRequired,
-	type: PropTypes.string.isRequired,
-	navigator: PropTypes.object
-};
 
 let navigatorStyle = {};
 
@@ -171,7 +189,7 @@ MoviesList.navigatorStyle = {
 
 function mapStateToProps(state, ownProps) {
 	return {
-		list: state.movies.list
+		list: state.movies.nowPlayingMovies
 	};
 }
 

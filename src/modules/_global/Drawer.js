@@ -81,8 +81,4 @@ class Drawer extends Component {
 	}
 }
 
-Drawer.propTypes = {
-	navigator: PropTypes.object
-};
-
 export default Drawer;

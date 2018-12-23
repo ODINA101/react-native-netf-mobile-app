@@ -5,10 +5,12 @@ import Drawer from './modules/_global/Drawer';
 import Movies from './modules/movies/Movies';
 import MoviesList from './modules/movies/MoviesList';
 import Movie from './modules/movies/Movie';
+import Serie from './modules/movies/Serie';
 import Search from './modules/movies/Search';
 
 export function registerScreens(store, Provider) {
 	Navigation.registerComponent('movieapp.Movie', () => Movie, store, Provider);
+	Navigation.registerComponent('movieapp.Serie', () => Serie, store, Provider);
 	Navigation.registerComponent('movieapp.Movies', () => Movies, store, Provider);
 	Navigation.registerComponent('movieapp.MoviesList', () => MoviesList, store, Provider);
 	Navigation.registerComponent('movieapp.Search', () => Search, store, Provider);

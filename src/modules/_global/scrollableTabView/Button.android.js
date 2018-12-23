@@ -14,8 +14,5 @@ const Button = props => (
 	</TouchableNativeFeedback>
 );
 
-Button.propTypes = {
-	children: PropTypes.object
-};
 
 module.exports = Button;

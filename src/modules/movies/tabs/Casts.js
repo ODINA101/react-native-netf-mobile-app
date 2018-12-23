@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
+
 import {
 	Text,
 	View,
@@ -8,34 +9,28 @@ import {
 import styles from './styles/Casts';
 import { TMDB_IMG_URL } from '../../../constants/api';
 
-const Casts = ({ info, getTabHeight }) => {
-	let computedHeight = (80 + 15) * info.casts.cast.length; // (castImage.height + castContainer.marginBottom)
-	computedHeight += 447 + 40; // Header height + container ((20 paddingVertical) = 40)
+export default class Casts extends Component {
+  render() {
+		let computedHeight = (80 + 15) * this.props.actors.length; // (castImage.height + castContainer.marginBottom)
+		computedHeight += 447 + 40; // Header height + container ((20 paddingVertical) = 40)
+		return (
+			<View style={styles.container} onLayout={this.props.getTabHeight.bind(this, 'casts', computedHeight)}>
+				{
+				this.props.actors.map(item => (
+						<View key={item.id} style={styles.castContainer}>
+							<Image ref={item.id} style={styles.castImage} source={{uri:"http://staticnet.adjara.com/cast/" + item.id + ".jpg"}}
+							onError={(e) => this.refs[item.id].setNativeProps({src: [{uri: "http://staticnet.adjara.com/imagesNew/noThumbnail.png"}]})}
+					    />
+							<View style={styles.characterContainer}>
+								<Text style={styles.characterName}>
+									{item.name}
+								</Text>
 
-	return (
-		<View style={styles.container} onLayout={getTabHeight.bind(this, 'casts', computedHeight)}>
-			{
-				info.casts.cast.map(item => (
-					<View key={item.cast_id} style={styles.castContainer}>
-						<Image source={{ uri: `${TMDB_IMG_URL}/w185/${item.profile_path}` }} style={styles.castImage} />
-						<View style={styles.characterContainer}>
-							<Text style={styles.characterName}>
-								{item.name}
-							</Text>
-							<Text style={styles.asCharacter}>
-								{item.character && `as ${item.character}`}
-							</Text>
+							</View>
 						</View>
-					</View>
-				))
-			}
-		</View>
-	);
-};
-
-Casts.propTypes = {
-	info: PropTypes.object.isRequired,
-	getTabHeight: PropTypes.func.isRequired
-};
-
-export default Casts;
+					))
+				}
+			</View>
+		);
+  }
+}

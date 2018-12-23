@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		flex: 1,
-		marginTop: 157
+		marginTop: 157,
 	},
 	progressBar: {
 		backgroundColor: '#0a0a0a',
@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
 	},
 	cardTagline: {
 		color: 'white',
-		fontSize: 15
+		fontSize: 13,
+		flexWrap: 'wrap'
 	},
 	cardGenre: {
 		flexDirection: 'row'
