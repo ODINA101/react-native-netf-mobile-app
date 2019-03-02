@@ -18,7 +18,12 @@ import CardTwo from './components/CardTwo';
 import ProgressBar from '../_global/ProgressBar';
 import styles from './styles/Movies';
 import { iconsMap } from '../../utils/AppIcons';
-
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
 class Movies extends Component {
 	constructor(props) {
 		super(props);
@@ -31,6 +36,14 @@ class Movies extends Component {
 		this._viewMovie = this._viewMovie.bind(this);
 		this._onRefresh = this._onRefresh.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
+
+
+
+		AdMobInterstitial.setAdUnitID('ca-app-pub-6370427711797263/7435578378');
+		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+
+
+
 	}
 
 	componentWillMount() {

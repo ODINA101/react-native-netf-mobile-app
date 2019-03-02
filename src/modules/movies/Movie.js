@@ -26,6 +26,12 @@ import Trailers from './tabs/Trailers';
 import styles from './styles/Movie';
 import VideoPlayer from "react-native-native-video-player"
 import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
 	const apiKey = '9d2bff12ed955c7f1f74b83187f188ae'
 	import Modal from "react-native-modal";
 class Movie extends Component {
@@ -65,6 +71,11 @@ class Movie extends Component {
 		this._viewMovie = this._viewMovie.bind(this);
 		this._openYoutube = this._openYoutube.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
+
+
+
+		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+
 	}
 
 	componentWillMount() {
@@ -266,8 +277,8 @@ class Movie extends Component {
 						/>
 					}>
 
-						<Modal animationIn="zoomInDown"
-          animationOut="zoomOutUp"
+						<Modal animationIn="bounceInLeft"
+          animationOut="bounceOutRight"
           animationInTiming={1000}
           animationOutTiming={1000}
           backdropTransitionInTiming={1000}
@@ -279,23 +290,25 @@ class Movie extends Component {
           justifyContent: 'center',
           alignItems: 'center'}}>
     <View style={{
-						backgroundColor:"#FFF",
+						backgroundColor:"#2B2C3D",
             width: 300,
-            height: 300,
+            height: 330,
 						alignItems: 'center',
 					 padding:15}}>
-						<Text style={{color:"#000",marginTop:20}}>აირჩიე ენა</Text>
+						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ენა</Text>
 						<SwitchSelector options={options} initial={0} onPress={value => this.setState({selectedLang:value})} />
 
-						<Text style={{color:"#000",marginTop:30}}>აირჩიე ხარისხი</Text>
+						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ხარისხი</Text>
 <SwitchSelector options={this.state.Quality_Options} initial={0} onPress={value => this.setState({selectedQual:value})} />
 			<View style={{marginTop:50,flexDirection: 'row'}}>
-			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#6A98E3",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
+			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
 		<Text style={{color:"#FFF"}} >დახურვა</Text>
 		</TouchableOpacity>
     <View style={{width:10}}/>
-			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:30,width:110,backgroundColor:"#DE8F8D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
-			<Text style={{color:"#FFF"}}>კარგი</Text>
+			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:38,
+				width:110,
+				backgroundColor:"#FFF",borderRadius:5,justifyContent: 'center',alignItems: 'center'}}>
+			<Text style={{color:"#2B2C3D"}}>კარგი</Text>
 			</TouchableOpacity>
      </View>
 

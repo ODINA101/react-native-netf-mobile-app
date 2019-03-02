@@ -291,8 +291,8 @@ class Serie extends Component {
 						/>
 					}>
 
-						<Modal animationIn="zoomInDown"
-          animationOut="zoomOutUp"
+						<Modal animationIn="bounceInLeft"
+          animationOut="bounceOutRight"
           animationInTiming={1000}
           animationOutTiming={1000}
           backdropTransitionInTiming={1000}
@@ -304,23 +304,31 @@ class Serie extends Component {
           justifyContent: 'center',
           alignItems: 'center'}}>
     <View style={{
-						backgroundColor:"#FFF",
+						backgroundColor:"#2B2C3D",
             width: 300,
-            height: 300,
+            height: 330,
 						alignItems: 'center',
 					 padding:15}}>
-						<Text style={{color:"#000",marginTop:20}}>აირჩიე ენა</Text>
-						<SwitchSelector options={options} initial={0} onPress={value => this.setState({selectedLang:value})} />
 
-						<Text style={{color:"#000",marginTop:30}}>აირჩიე ხარისხი</Text>
+						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ენა</Text>
+						<SwitchSelector options={options} initial={0} onPress={value => this.setState({selectedLang:value})} />
+						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ხარისხი</Text>
+
+
+
 <SwitchSelector options={this.state.Quality_Options} initial={0} onPress={value => this.setState({selectedQual:value})} />
 			<View style={{marginTop:50,flexDirection: 'row'}}>
-			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#6A98E3",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
+
+
+
+			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
 		<Text style={{color:"#FFF"}} >დახურვა</Text>
 		</TouchableOpacity>
-    <View style={{width:10}}/>
-			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:30,width:110,backgroundColor:"#DE8F8D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
-			<Text style={{color:"#FFF"}}>კარგი</Text>
+		<View style={{width:10}}/>
+			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:38,
+				width:110,
+				backgroundColor:"#FFF",borderRadius:5,justifyContent: 'center',alignItems: 'center'}}>
+			<Text style={{color:"#2B2C3D"}}>კარგი</Text>
 			</TouchableOpacity>
      </View>
 

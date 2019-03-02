@@ -136,6 +136,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-admob')
     compile project(':react-native-native-video-player')
     compile project(':react-native-navigation')
     compile project(':react-native-config')

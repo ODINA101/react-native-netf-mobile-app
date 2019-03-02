@@ -5,6 +5,7 @@ import android.util.Log;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.sbugert.rnadmob.RNAdMobPackage;
 import com.wog.videoplayer.VideoPlayerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -31,6 +32,7 @@ public class MainApplication extends NavigationApplication {
   //   protected List<ReactPackage> getPackages() {
   //     return Arrays.<ReactPackage>asList(
   //         new MainReactPackage(),
+          //  new RNAdMobPackage(),
 
   //     );
   //   }
@@ -47,7 +49,8 @@ public class MainApplication extends NavigationApplication {
 		new VectorIconsPackage(),
 		new LinearGradientPackage(),
 		new ReactNativeConfigPackage(),
-     new VideoPlayerPackage()
+     new VideoPlayerPackage(),
+     new RNAdMobPackage()
     );
   }
 

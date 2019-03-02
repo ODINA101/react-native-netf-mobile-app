@@ -70,10 +70,10 @@ class CardThree extends Component {
 							<View />
 
 								):(
-<View style={styles.cardStar}>
-	{iconStar}
-	<Text style={styles.cardStarRatings}>{info.imdb}</Text>
-</View>
+            <View style={styles.cardStar}>
+	          {iconStar}
+	              <Text style={styles.cardStarRatings}>{info.imdb}</Text>
+            </View>
 
 								)
 							}
