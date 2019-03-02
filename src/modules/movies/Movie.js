@@ -26,6 +26,8 @@ import Trailers from './tabs/Trailers';
 import styles from './styles/Movie';
 import VideoPlayer from "react-native-native-video-player"
 import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api';
+import { iconsMap } from '../../utils/AppIcons';
+
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -72,8 +74,6 @@ class Movie extends Component {
 		this._openYoutube = this._openYoutube.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
 
-
-
 		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
 
 	}
@@ -83,6 +83,10 @@ class Movie extends Component {
 
 	}
 
+
+
+
+
 	getq(data) {
      if(data > 1000) {
        return "HD"
@@ -91,6 +95,9 @@ class Movie extends Component {
      }
 
    }
+
+
+
 
 	_retrieveDetails(isRefreshed) {
 		// this.props.actions.retrieveMovieDetails(this.props.movieId)
@@ -229,8 +236,35 @@ class Movie extends Component {
 			if (event.id === 'close') {
 				this.props.navigator.dismissModal();
 			}
+
+     if (event.id === 'love') {
+			 this.props.navigator.setButtons({
+				 rightButtons:[
+			   	 {
+			      	 id:'love',
+							 icon:iconsMap['ios-heart']
+			  	 },
+					 {
+							id: 'close',
+							icon: iconsMap['ios-arrow-round-down']
+						}
+					]
+			 })
+
+		 }
+
+
 		}
 	}
+
+
+
+
+
+
+
+
+
 	checkTitle(data) {
  		 if (data.title_ge !== "") {
  				 return (data.title_ge);
@@ -297,9 +331,8 @@ class Movie extends Component {
 					 padding:15}}>
 						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ენა</Text>
 						<SwitchSelector options={options} initial={0} onPress={value => this.setState({selectedLang:value})} />
-
 						<Text style={{color:"#FFF",paddingTop:20,paddingBottom:20}}>აირჩიე ხარისხი</Text>
-<SwitchSelector options={this.state.Quality_Options} initial={0} onPress={value => this.setState({selectedQual:value})} />
+									<SwitchSelector options={this.state.Quality_Options} initial={0} onPress={value => this.setState({selectedQual:value})} />
 			<View style={{marginTop:50,flexDirection: 'row'}}>
 			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
 		<Text style={{color:"#FFF"}} >დახურვა</Text>
@@ -321,8 +354,6 @@ class Movie extends Component {
 
 									<LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} />
 									<TouchableOpacity style={{width:50,height:50,position: 'absolute',top:100,alignSelf: 'center'}} onPress={() => {
-										//
-										//
                      this.setState({ShowModal:true})
 																	}} >
 																	<Icon  size={50} color="#FFF"  name="md-play"/>
@@ -350,7 +381,6 @@ class Movie extends Component {
 	               {iconStar}
 	             <Text style={styles.cardStarRatings}>{this.checkImdb(item)}</Text>
                  </View>
-
 								)
 							}
 								<Text style={styles.cardRunningHours} />

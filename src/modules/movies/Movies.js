@@ -106,6 +106,10 @@ class Movies extends Component {
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+						{
+							id:"love",
+							icon:iconsMap['ios-heart-outline']
+						},
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']
@@ -124,6 +128,10 @@ class Movies extends Component {
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+						  {
+								id:"love",
+								icon:iconsMap['ios-heart-outline']
+							},
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']

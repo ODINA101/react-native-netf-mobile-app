@@ -1,4 +1,4 @@
-package com.movieapp;
+package irakli.samniashvili.app;
 
 import android.app.Application;
 import android.util.Log;
