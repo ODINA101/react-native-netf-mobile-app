@@ -5,19 +5,26 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground
+  TouchableOpacity
 } from 'react-native';
+import   ImageBackground from "./ImageBackground"
 import img from "../kuka.jpeg"
 export default class CardFour extends Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
-      <View style={styles.container}>
+      <TouchableOpacity activeOpacity={0.6} onPress={()=>this.props.viewCat(this.props.info.id,this.props.info.label)} style={styles.container}>
+      <ImageBackground
+      resizeMode="cover"
+      opacity={0.5}
+      source={{uri:this.props.info.url?(this.props.info.url):("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png")}} style={{flex:1}}>
+      </ImageBackground>
 
-      <ImageBackground source={{uri:"https://www.sbs.com.au/movies/sites/sbs.com.au.film/files/styles/double/public/corn_island_704_2.jpg?itok=I5IJO749&mtime=1471280208"}} style={{flex:1}}>
-          <Text>Inside</Text>
-        </ImageBackground>
+        <Text style={{color:"#FFF",fontWeight: 'bold'}}>{this.props.info.label}</Text>
 
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -26,8 +33,12 @@ const styles = StyleSheet.create({
   container: {
     height:80,
     width:130,
-    backgroundColor:"blue",
+    backgroundColor:"black",
     marginRight: 10,
-    borderRadius: 3
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+
   },
 });

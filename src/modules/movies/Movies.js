@@ -19,6 +19,10 @@ import CardFour from './components/CardFour';
 import ProgressBar from '../_global/ProgressBar';
 import styles from './styles/Movies';
 import { iconsMap } from '../../utils/AppIcons';
+
+import List from "./categories"
+
+
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -37,21 +41,14 @@ class Movies extends Component {
 		this._viewMovie = this._viewMovie.bind(this);
 		this._onRefresh = this._onRefresh.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
-
-
-
 		AdMobInterstitial.setAdUnitID('ca-app-pub-6370427711797263/7435578378');
 		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
-
-
+//alert(List)
 
 	}
 
 	componentWillMount() {
 		this._retrieveMovies();
-	}
-
-	componentWillReceiveProps(nextProps) {
 	}
 
 	_retrieveMovies(isRefreshed) {
@@ -92,6 +89,17 @@ class Movies extends Component {
 		});
 	}
 
+	_viewCat(id,title) {
+		this.props.navigator.showModal({
+			title,
+			screen: 'movieapp.CatMoviesList',
+			passProps: {
+				title,
+				id
+			},
+		 	backButtonHidden:false,
+		});
+	}
 	_viewMovie(movieId,info) {
 		fetch(`http://net.adjara.com/req/jsondata/req.php?id=${info.id}&reqId=getInfo`)
 		  .then(res => res.json())
@@ -208,18 +216,16 @@ class Movies extends Component {
 
 				<View style={styles.listHeading}>
 					<Text style={styles.listHeadingLeft}>კატეგორიები</Text>
-					<TouchableOpacity>
-						<Text
-							style={styles.listHeadingRight}
-							onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'ფილმები ქართულად')}>
-							ყველა
-						</Text>
-					</TouchableOpacity>
+
 				</View>
 				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-										<CardFour key={1} info={2} viewMovie={()=>{}}/>
-										<CardFour key={2} info={2} viewMovie={()=>{}}/>
-										<CardFour key={3} info={2} viewMovie={()=>{}}/>
+				{
+					List.map((item,i) => {
+					   return (
+							 <CardFour key={i} info={item} viewCat={(id,title) => this._viewCat(id,title)}/>
+						 )
+					})
+				}
 				</ScrollView>
 
 

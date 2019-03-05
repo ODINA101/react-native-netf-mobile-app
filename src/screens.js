@@ -8,6 +8,7 @@ import Movie from './modules/movies/Movie';
 import Serie from './modules/movies/Serie';
 import Search from './modules/movies/Search';
 import Favorites from './modules/movies/Favorites';
+import CatMoviesList from './modules/movies/CatMoviesList';
 export function registerScreens(store, Provider) {
 	Navigation.registerComponent('movieapp.Movie', () => Movie, store, Provider);
 	Navigation.registerComponent('movieapp.Serie', () => Serie, store, Provider);
@@ -15,5 +16,6 @@ export function registerScreens(store, Provider) {
 	Navigation.registerComponent('movieapp.MoviesList', () => MoviesList, store, Provider);
 	Navigation.registerComponent('movieapp.Search', () => Search, store, Provider);
 	Navigation.registerComponent('movieapp.Favorites', () => Favorites, store, Provider);
+	Navigation.registerComponent('movieapp.CatMoviesList', () => CatMoviesList, store, Provider);
 	Navigation.registerComponent('movieapp.Drawer', () => Drawer);
 }
