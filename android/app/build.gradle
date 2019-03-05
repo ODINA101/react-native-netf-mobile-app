@@ -92,8 +92,8 @@ android {
         applicationId "irakli.samniashvili.app"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 50261
-        versionName "71"
+        versionCode 50262
+        versionName "72"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-simple-download-manager')
     compile project(':react-native-admob')
     compile project(':react-native-native-video-player')
     compile project(':react-native-navigation')

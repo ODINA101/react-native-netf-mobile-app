@@ -8,7 +8,8 @@ import {
 	ToastAndroid,
 	View,
 	TouchableOpacity,
-	Picker
+	Picker,
+	AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -29,6 +30,7 @@ import VideoPlayer from "react-native-native-video-player"
 import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api';
 	const apiKey = '9d2bff12ed955c7f1f74b83187f188ae'
 	import Modal from "react-native-modal";
+	import { iconsMap } from '../../utils/AppIcons';
 
 var seasons = [];
 var szn = [];
@@ -67,7 +69,8 @@ class Serie extends Component {
 			Quality_Options:[],
 			selectedQual:"",
 			seasons: [],
-
+			addedToFavorites:false,
+ 			AsyncStorageData:[]
 		};
 
 		this._getTabHeight = this._getTabHeight.bind(this);
@@ -99,6 +102,45 @@ class Serie extends Component {
  	_retrieveDetails(isRefreshed) {
 
 
+				(async () => {
+
+
+			 		  try {
+			 		    const value = await AsyncStorage.getItem('favorites');
+			 		    if (value !== null) {
+			 		      // We have data!!
+			 		      // alert(JSON.stringify(value));
+			 				 let parsedVal = JSON.parse(value)
+			 			//	 alert(JSON.stringify(parsedVal))
+			      // alert(this.props.item.id)
+			         parsedVal.forEach(item => {
+			 					   if(item.id == this.props.item.id) {
+			 							 this.props.navigator.setButtons({
+			 								rightButtons:[
+			 									{
+			 											id:'love',
+			 											icon:iconsMap['ios-heart']
+			 									},
+			 									{
+			 										 id: 'close',
+			 										 icon: iconsMap['ios-arrow-round-down']
+			 									 }
+			 								 ]
+			 							})
+
+										this.setState({addedToFavorites:true,AsyncStorageData:parsedVal})
+			 						 }
+			 				})
+
+
+			 		    }
+			 		  } catch (error) {
+			 		    // Error retrieving data
+			 				alert(error)
+			 		  }
+
+
+			  })()
     // firebase.database().ref().child("series").child(this.props.navigation.state.p
     // a rams.key).child("parts").on("value",snapshot => {     databaseItems = [];
     // for(var i=1;i<=snapshot.numChildren();i++) { databaseItems.push("სეზონი " +
@@ -225,7 +267,13 @@ class Serie extends Component {
 		});
 	}
 
-
+	_storeData = async (data1,data2) => {
+	  try {
+	    await AsyncStorage.setItem(data1,data2);
+	  } catch (error) {
+	    // Error saving data
+	  }
+	};
 
 
 	_openYoutube(youtubeUrl) {
@@ -238,10 +286,80 @@ class Serie extends Component {
 		});
 	}
 
-	_onNavigatorEvent(event) {
+	async _onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'close') {
 				this.props.navigator.dismissModal();
+			}
+			if (event.id === 'love') {
+				if(!this.state.addedToFavorites) {
+	var value = await AsyncStorage.getItem('favorites');
+ //JSON.stringify(added))
+let added;
+
+ if(value !== null) {
+  added = JSON.parse(value)
+}else{
+	added = []
+}
+
+
+
+		added.push({
+			id:this.props.item.id,
+			release_date:this.props.item.release_date,
+			director:this.props.item.director,
+			description:this.props.item.description,
+			casts:this.state.actors,
+			poster:this.props.item.poster,
+			data_rating:this.props.item.data_rating,
+			title_ge:this.props.item.title_ge,
+			title_en:this.props.item.title_en
+
+			})
+		added = JSON.stringify(added)
+
+			this._storeData("favorites",added)
+
+
+
+
+				this.props.navigator.setButtons({
+					rightButtons:[
+						{
+								id:'love',
+								icon:iconsMap['ios-heart']
+						},
+						{
+							 id: 'close',
+							 icon: iconsMap['ios-arrow-round-down']
+						 }
+					 ]
+				})
+
+ }else{
+
+	 this.setState({addedToFavorites:false})
+				this.props.navigator.setButtons({
+					rightButtons:[
+						{
+								id:'love',
+								icon:iconsMap['ios-heart-outline']
+						},
+						{
+							 id: 'close',
+							 icon: iconsMap['ios-arrow-round-down']
+						 }
+					 ]
+				})
+	let favs = this.state.AsyncStorageData;
+		favs.forEach((item,id) => {
+				 if(item.id == this.props.item.id)  {
+					 favs.splice(id,1);
+					 this._storeData("favorites",JSON.stringify(favs))
+				 }
+		})
+				 }
 			}
 		}
 	}
@@ -325,7 +443,7 @@ class Serie extends Component {
 		<Text style={{color:"#FFF"}} >დახურვა</Text>
 		</TouchableOpacity>
 		<View style={{width:10}}/>
-			<TouchableOpacity  onPress={()=>this.playMovie(item)}style={{height:38,
+			<TouchableOpacity  onPress={()=>this.playMovie(item)} style={{height:38,
 				width:110,
 				backgroundColor:"#FFF",borderRadius:5,justifyContent: 'center',alignItems: 'center'}}>
 			<Text style={{color:"#2B2C3D"}}>კარგი</Text>

@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import * as moviesActions from './movies.actions';
 import CardOne from './components/CardOne';
 import CardTwo from './components/CardTwo';
+import CardFour from './components/CardFour';
 import ProgressBar from '../_global/ProgressBar';
 import styles from './styles/Movies';
 import { iconsMap } from '../../utils/AppIcons';
@@ -204,6 +205,25 @@ class Movies extends Component {
 					))}
 				</Swiper>
 				<View>
+
+				<View style={styles.listHeading}>
+					<Text style={styles.listHeadingLeft}>კატეგორიები</Text>
+					<TouchableOpacity>
+						<Text
+							style={styles.listHeadingRight}
+							onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'ფილმები ქართულად')}>
+							ყველა
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+										<CardFour key={1} info={2} viewMovie={()=>{}}/>
+										<CardFour key={2} info={2} viewMovie={()=>{}}/>
+										<CardFour key={3} info={2} viewMovie={()=>{}}/>
+				</ScrollView>
+
+
+
 					<View style={styles.listHeading}>
 						<Text style={styles.listHeadingLeft}>ფილმები ქართულად</Text>
 						<TouchableOpacity>
@@ -239,11 +259,11 @@ class Movies extends Component {
 
 
 									<View style={styles.listHeading}>
-									<Text style={styles.listHeadingLeft}>პოპულარული</Text>
+									<Text style={styles.listHeadingLeft}>პრემიერა</Text>
 									<TouchableOpacity>
 										<Text
 											style={styles.listHeadingRight}
-											onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'Movies')}>
+											onPress={this._viewMoviesList.bind(this, 'ფილმები ქართულად', 'პრემიერა')}>
 											ყველა
 										</Text>
 									</TouchableOpacity>
@@ -256,25 +276,7 @@ class Movies extends Component {
 
 
 					<View style={styles.browseList}>
-											<TouchableOpacity activeOpacity={0.7}>
-							<View style={styles.browseListItem}>
-								{iconTop}
-								<Text style={styles.browseListItemText} onPress={this._viewMoviesList.bind(this, 'top_rated', 'Top Rated')}>
-									Top Rated
-								</Text>
-							</View>
-						</TouchableOpacity>
-						<TouchableOpacity activeOpacity={0.7}>
-							<View style={styles.browseListItem}>
-								{iconUp}
-								<Text
-									style={styles.browseListItemText}
-									onPress={this._viewMoviesList.bind(this, 'upcoming', 'Upcoming')}>
-									Upcoming
-								</Text>
-							</View>
-						</TouchableOpacity>
-					</View>
+										</View>
 				</View>
 			</ScrollView>
 		);

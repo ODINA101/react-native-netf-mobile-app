@@ -40,7 +40,7 @@ constructor(props) {
  this.state.seasons = szns
 }
 getNum(num) {
-	 if (num < 10) {
+	 if (num < 9) {
 		 return ("0" + (num+1)).toString()
 	 } else {
 		 return (num+1).toString();
@@ -89,6 +89,8 @@ Play() {
 	 // "_" + this.getNum(this.state.serieI) + "_" +  this.state.selectedLang + "_"
 	 // + this.state.selectedQual + ".mp4")
 	// http://" + this.state.link +  this.props.navigation.state.params.key+ "_" + this.state.lang + "_" + 1500 + ".mp4
+	this.setState({ShowModal:false})
+
 }
 
 

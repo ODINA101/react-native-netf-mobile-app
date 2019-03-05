@@ -15,6 +15,7 @@ class Drawer extends Component {
 		super(props);
 
 		this._goToMovies = this._goToMovies.bind(this);
+		this._goToFavorites = this._goToFavorites.bind(this);
 		this._openSearch = this._openSearch.bind(this);
 	}
 
@@ -33,6 +34,14 @@ class Drawer extends Component {
 		});
 	}
 
+	_goToFavorites() {
+		this._toggleDrawer();
+		this.props.navigator.showModal({
+			screen: 'movieapp.Favorites',
+			title:'Favorites'
+		});
+	}
+
 	_toggleDrawer() {
 		this.props.navigator.toggleDrawer({
 			to: 'closed',
@@ -44,6 +53,7 @@ class Drawer extends Component {
 	render() {
 		const iconSearch = (<Icon name="md-search" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 2 }]} />);
 		const iconMovies = (<Icon name="md-film" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 3 }]} />);
+		const iconFav = (<Icon name="md-heart" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 3 }]} />);
 		const iconTV = (<Icon name="ios-desktop" size={26} color="#9F9F9F" style={styles.drawerListIcon} />);
 		return (
 			<LinearGradient colors={['rgba(0, 0, 0, 0.7)', 'rgba(0,0,0, 0.9)', 'rgba(0,0,0, 1)']} style={styles.linearGradient}>
@@ -53,7 +63,7 @@ class Drawer extends Component {
 							<View style={styles.drawerListItem}>
 								{iconSearch}
 								<Text style={styles.drawerListItemText}>
-									Search
+									ძიება
 								</Text>
 							</View>
 						</TouchableOpacity>
@@ -61,16 +71,19 @@ class Drawer extends Component {
 							<View style={styles.drawerListItem}>
 								{iconMovies}
 								<Text style={styles.drawerListItemText}>
-									Movies
+									ფილმები
 								</Text>
 							</View>
 						</TouchableOpacity>
-						<View style={styles.drawerListItem}>
-							{iconTV}
-							<Text style={styles.drawerListItemText} onPress={() => ToastAndroid.show('Coming Soon!', ToastAndroid.SHORT)}>
-								TV Shows
-							</Text>
-						</View>
+						<TouchableOpacity onPress={this._goToFavorites}>
+							<View style={styles.drawerListItem}>
+								{iconFav}
+								<Text style={styles.drawerListItemText}>
+									ფავორიტი
+								</Text>
+							</View>
+						</TouchableOpacity>
+
 					</View>
 					<Text style={styles._version}>
 						{/* 'v1.0.0' */}

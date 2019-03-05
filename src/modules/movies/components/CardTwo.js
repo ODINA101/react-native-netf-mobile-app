@@ -15,7 +15,7 @@ function checkTitle(data) {
 				 return (data.title_en);
 		 }
  }
- 
+
 
 const CardTwo = ({ info, viewMovie }) => (
 	<TouchableOpacity activeOpacity={0.8} onPress={viewMovie.bind(this, info.id,info)}>
