@@ -19,7 +19,7 @@ import CardFour from './components/CardFour';
 import ProgressBar from '../_global/ProgressBar';
 import styles from './styles/Movies';
 import { iconsMap } from '../../utils/AppIcons';
-
+import axios from "axios"
 import List from "./categories"
 
 
@@ -35,34 +35,84 @@ class Movies extends Component {
 
 		this.state = {
 			isLoading: true,
-			isRefreshing: false
+			isRefreshing: false,
+			collections:[]
 		};
 
 		this._viewMovie = this._viewMovie.bind(this);
 		this._onRefresh = this._onRefresh.bind(this);
-		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
+		this.openSearch = this.openSearch.bind(this)
+		this._retrieveMovies = this._retrieveMovies.bind(this)
+		this.props.navigator.setOnNavigatorEvent((event)=> {
+			if (event.type === 'NavBarButtonPress') {
+			if(event.id === 'Search') {
+     this.openSearch()
+			}
+		}
+		});
 		AdMobInterstitial.setAdUnitID('ca-app-pub-6370427711797263/7435578378');
 		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
 //alert(List)
-
+ this.props.navigator.setButtons({leftButtons:[{id:'sideMenu'}],rightButtons:[
+	 {
+			id: 'Search',
+			title: 'Search',
+			icon: iconsMap['ios-search']
+		}
+	 ]})
 	}
 
 	componentWillMount() {
 		this._retrieveMovies();
 	}
 
-	_retrieveMovies(isRefreshed) {
-		let p = this;
-		this.props.actions.retrieveNowPlayingMovies("test",function(){
-			p.props.actions.retrievePopularMovies("test",function(){
-			p.props.actions.retrieveSeries(function() {
-				p.setState({isLoading:false})
 
-			})
+ openSearch() {
+	 this.props.navigator.showModal({
+		 screen: 'movieapp.Search',
+		 title: 'ძიება'
+	 });
+
+ }
+
+
+	_retrieveMovies(isRefreshed) {
+
+		this.props.actions.retrieveNowPlayingMovies("test",(data) => {
+			this.props.actions.retrievePopularMovies("test",(data) => {
+				try {
+				this.setState({isLoading:false},(e) => {
+        //  alert(e)
+				})
+			} catch(e) {
+			//	alert(e)
+			}
+
 
 			})
 
 		});
+
+   axios.get("http://adjaranet.com/req/jsondata/req.php?reqId=getCollections")
+	 .then(res => {
+		 res = res.data;
+		 var FinalData = [];
+
+
+				Object.values(res).forEach((item,i) => {
+						FinalData.push({
+								name:item.name,
+								id:Object.keys(res)[i]
+						})
+				})
+
+
+		 //alert(JSON.stringify(res.data))
+		 this.setState({collections:FinalData,isLoading:false})
+	 })
+
+
+
 		if (isRefreshed && this.setState({ isRefreshing: false }));
 	}
 
@@ -89,8 +139,21 @@ class Movies extends Component {
 		});
 	}
 
-	_viewCat(id,title) {
+	_viewCat(id,title,isCollection) {
+
+		if(isCollection) {
+
 		this.props.navigator.showModal({
+			title,
+			screen: 'movieapp.ColMoviesList',
+			passProps: {
+				title,
+				id
+			},
+		 	backButtonHidden:false,
+		});
+		}else{
+			this.props.navigator.showModal({
 			title,
 			screen: 'movieapp.CatMoviesList',
 			passProps: {
@@ -99,7 +162,25 @@ class Movies extends Component {
 			},
 		 	backButtonHidden:false,
 		});
+
+		}
+
 	}
+
+	_viewColCat() {
+
+		this.props.navigator.showModal({
+			title:"test",
+			screen: 'movieapp.CatCol',
+			passProps: {
+				title:"test",
+				id:266
+			},
+		 	backButtonHidden:false,
+		});
+
+	}
+
 	_viewMovie(movieId,info) {
 		fetch(`http://net.adjara.com/req/jsondata/req.php?id=${info.id}&reqId=getInfo`)
 		  .then(res => res.json())
@@ -150,7 +231,6 @@ class Movies extends Component {
 		 		});
 			}
 		});
-
 	}
 
 	_onRefresh() {
@@ -182,8 +262,10 @@ class Movies extends Component {
 		}
 	}
 
+
+
 	render() {
-		const { nowPlayingMovies, popularMovies,Series } = this.props;
+		const { nowPlayingMovies, popularMovies } = this.props;
 		const iconPlay = <Icon name="md-play" size={21} color="#9F9F9F" style={{ paddingLeft: 3, width: 22 }} />;
 		const iconTop = <Icon name="md-trending-up" size={21} color="#9F9F9F" style={{ width: 22 }} />;
 		const iconUp = <Icon name="md-recording" size={21} color="#9F9F9F" style={{ width: 22 }} />;
@@ -222,12 +304,24 @@ class Movies extends Component {
 				{
 					List.map((item,i) => {
 					   return (
-							 <CardFour key={i} info={item} viewCat={(id,title) => this._viewCat(id,title)}/>
+							 <CardFour key={i} collections={false} info={item} viewCat={(id,title) => this._viewCat(id,title,false)}/>
 						 )
 					})
 				}
 				</ScrollView>
 
+				<View style={styles.listHeading}>
+					<Text style={styles.listHeadingLeft}>კოლექციები</Text>
+								</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+				{
+					this.state.collections.map((item,i) => {
+						 return (
+							 <CardFour key={i} collections={true} info={item} viewCat={(id,title) => this._viewCat(id,title,true)}/>
+						 )
+					})
+				}
+				</ScrollView>
 
 
 					<View style={styles.listHeading}>
@@ -247,21 +341,6 @@ class Movies extends Component {
 					</ScrollView>
 
 
-					<View style={styles.listHeading}>
-					<Text style={styles.listHeadingLeft}>სერიალები ქართულად</Text>
-					<TouchableOpacity>
-						<Text
-							style={styles.listHeadingRight}
-							onPress={this._viewMoviesList.bind(this, 'სერიალები ქართულად', 'სერიალები ქართულად')}>
-             ყველა
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-					{Series.map(info => (
-						<CardTwo key={info.id} info={info} viewMovie={this._viewMovie} />
-					))}
-				</ScrollView>
 
 
 									<View style={styles.listHeading}>
@@ -294,7 +373,6 @@ function mapStateToProps(state, ownProps) {
 	return {
 		nowPlayingMovies: state.movies.nowPlayingMovies,
 		popularMovies: state.movies.popularMovies,
-		Series:state.movies.Series
 	};
 }
 

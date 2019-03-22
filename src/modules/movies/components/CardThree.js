@@ -19,22 +19,18 @@ class CardThree extends Component {
 	constructor(props) {
 		super(props);
 		//alert(this.props.info.id)
-
 		this.state = {
 			genres:"",
 			des:""
 		}
 
-
-
-                          fetch("http://net.adjara.com/req/jsondata/req.php?id=" + this.props.info.id + "&reqId=getInfo")
-                              .then(res => res.json())
-                              .then(res => {
-                         let genres = Object.keys(res.genres).map(i => res.genres[i])
-                         let director = Object.keys(res.director).map(i => res.director[i]);
-							        	this.setState({genres})
-
-                         this.setState({des: res.desc[0]})
+fetch("http://net.adjara.com/req/jsondata/req.php?id=" + this.props.info.id + "&reqId=getInfo")
+      .then(res => res.json())
+              .then(res => {
+             let genres = Object.keys(res.genres).map(i => res.genres[i])
+             let director = Object.keys(res.director).map(i => res.director[i]);
+						 	this.setState({genres})
+            this.setState({des: res.desc[0]})
 
 
 
@@ -48,6 +44,14 @@ class CardThree extends Component {
 				 return (data.title_en);
 		 }
  }
+ checkImdb(data) {
+			 if ((parseFloat(data).toFixed(1)) !== parseFloat(0.0).toFixed(1)) {
+					 return (parseFloat(data).toFixed(1));
+			 } else {
+					 return (null);
+			 }
+	 }
+
 	render() {
 		const { info, viewMovie,searching } = this.props;
 		return (
@@ -72,7 +76,7 @@ class CardThree extends Component {
 								):(
             <View style={styles.cardStar}>
 	          {iconStar}
-	              <Text style={styles.cardStarRatings}>{info.imdb}</Text>
+	              <Text style={styles.cardStarRatings}>{ this.checkImdb(info.imdb)!=="NaN"?(this.checkImdb(info.imdb)):("")   }</Text>
             </View>
 
 								)

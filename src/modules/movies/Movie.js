@@ -275,7 +275,6 @@ class Movie extends Component {
 
   playMovie(item) {
 		 if(this.state.downloading) {
-
                                     const url = this.state.link + item.id + "_" + this.state.selectedLang + "_" + this.state.selectedQual + ".mp4";
                                     const headers = {'Authorization': 'movie is downloading'};
                                     const config = {
@@ -301,8 +300,6 @@ class Movie extends Component {
 		 }else{
 		VideoPlayer.showVideoPlayer(this.state.link + item.id + "_" + this.state.selectedLang + "_" + this.state.selectedQual + ".mp4")
 		 }
-
-
 		 this.setState({ShowModal:false})
 	}
 
@@ -353,6 +350,7 @@ async _onNavigatorEvent(event) {
 		 casts:this.state.actors,
 		 poster:this.props.item.poster,
 		 data_rating:this.props.item.data_rating,
+		 imdb:this.checkImdb(this.props.item),
 		 title_ge:this.props.item.title_ge,
 		 title_en:this.props.item.title_en
 	 })
@@ -407,11 +405,6 @@ async _onNavigatorEvent(event) {
 
 
 
-
-
-
-
-
 	checkTitle(data) {
  		 if (data.title_ge !== "") {
  				 return (data.title_ge);
@@ -431,14 +424,16 @@ async _onNavigatorEvent(event) {
 	render() {
 		const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
 		const { details } = this.props;
-		const {item,searching} = this.props;
+		const {item,searching,movieId} = this.props;
 		const info = details;
 		const options = this.state.QOptions;
 		let height;
 		if (this.state.tab === 0) height = this.state.infoTabHeight;
 		if (this.state.tab === 1) height = this.state.castsTabHeight;
 		if (this.state.tab === 2) height = this.state.trailersTabHeight;
+		if(searching) {
 
+		}
 		return (
 			this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
 			<ScrollView
@@ -497,7 +492,7 @@ async _onNavigatorEvent(event) {
 						</Modal>
 				<View style={{ height }}>
 													<View>
-									<Image  blurRadius={2}   source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + info.id + "/covers/214x321-" + info.id + ".jpg"):(item.poster) }} style={styles.imageBackdrop} />
+									<Image  blurRadius={2}   source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + movieId + "/covers/214x321-" + movieId + ".jpg"):(item.poster) }} style={styles.imageBackdrop} />
 
 									<LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} />
 
@@ -505,7 +500,7 @@ async _onNavigatorEvent(event) {
 									<TouchableOpacity style={{width:50,height:50}} onPress={() => {
                      this.setState({downloading:false,ShowModal:true})
 																	}} >
-																	<Icon  size={50} color="#FFF"  name="md-play"/>
+																	<Icon  size={50} color="#FFF"  name="ios-play"/>
 									</TouchableOpacity>
 
 									<TouchableOpacity style={{width:50,height:50}} onPress={() => {
@@ -521,7 +516,7 @@ async _onNavigatorEvent(event) {
 								</View>
 
 					<View style={styles.cardContainer}>
-						<Image source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + info.id + "/covers/214x321-" + info.id + ".jpg"):(item.poster)}} style={styles.cardImage} />
+						<Image source={{ uri: searching?("http://staticnet.adjara.com/moviecontent/" + movieId + "/covers/214x321-" + movieId + ".jpg"):(item.poster)}} style={styles.cardImage} />
 						<View style={styles.cardDetails}>
 							<Text style={styles.cardTitle}>{this.checkTitle(item)}</Text>
 							<Text style={styles.cardTagline}></Text>

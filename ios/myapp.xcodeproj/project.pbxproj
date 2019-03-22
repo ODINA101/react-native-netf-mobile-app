@@ -55,7 +55,7 @@
 		FAF2076391C345F9A12BF499 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 735CB57E26304933B3D9EBD6 /* FontAwesome5_Regular.ttf */; };
 		EB3A9D2B896F442EB0B796CB /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 301A728C7655490CA2049A8A /* FontAwesome5_Solid.ttf */; };
 		17A284C7F34A4FF482034F51 /* libRNVideoPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 863936011BBD4D488A7F1C59 /* libRNVideoPlayer.a */; };
-		3FBDABB63C5F417882ACA039 /* libRNAdMobManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72FCC42A6AAB4014BCF67C83 /* libRNAdMobManager.a */; };
+		B0C143EBB9774AB0A52A2D9C /* libRNAdMobManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B84CCB75F14F5BBB2E7147 /* libRNAdMobManager.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -327,8 +327,8 @@
 		301A728C7655490CA2049A8A /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8D2D6572CB95478383D4E055 /* RNVideoPlayer.xcodeproj */ = {isa = PBXFileReference; name = "RNVideoPlayer.xcodeproj"; path = "../node_modules/react-native-native-video-player/ios/RNVideoPlayer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		863936011BBD4D488A7F1C59 /* libRNVideoPlayer.a */ = {isa = PBXFileReference; name = "libRNVideoPlayer.a"; path = "libRNVideoPlayer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		BE25AFB63F3648F9BEC76BD8 /* RNAdMobManager.xcodeproj */ = {isa = PBXFileReference; name = "RNAdMobManager.xcodeproj"; path = "../node_modules/react-native-admob/ios/RNAdMobManager.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		72FCC42A6AAB4014BCF67C83 /* libRNAdMobManager.a */ = {isa = PBXFileReference; name = "libRNAdMobManager.a"; path = "libRNAdMobManager.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		8AD2A32FAE2D431A8283148A /* RNAdMobManager.xcodeproj */ = {isa = PBXFileReference; name = "RNAdMobManager.xcodeproj"; path = "../node_modules/react-native-admob/ios/RNAdMobManager.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B5B84CCB75F14F5BBB2E7147 /* libRNAdMobManager.a */ = {isa = PBXFileReference; name = "libRNAdMobManager.a"; path = "libRNAdMobManager.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,7 +360,7 @@
 				B062F3AFDD4A4D9C98D34298 /* libBVLinearGradient.a in Frameworks */,
 				4EAF077D63AC45EAB45308E7 /* libReactNativeConfig.a in Frameworks */,
 				17A284C7F34A4FF482034F51 /* libRNVideoPlayer.a in Frameworks */,
-				3FBDABB63C5F417882ACA039 /* libRNAdMobManager.a in Frameworks */,
+				B0C143EBB9774AB0A52A2D9C /* libRNAdMobManager.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,7 +586,7 @@
 				966E7F832AD94EC2B32A9D6A /* BVLinearGradient.xcodeproj */,
 				F133C8D874914AD6A5B02E8E /* ReactNativeConfig.xcodeproj */,
 				8D2D6572CB95478383D4E055 /* RNVideoPlayer.xcodeproj */,
-				BE25AFB63F3648F9BEC76BD8 /* RNAdMobManager.xcodeproj */,
+				8AD2A32FAE2D431A8283148A /* RNAdMobManager.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1183,10 +1183,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1220,10 +1216,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1321,10 +1313,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1363,10 +1351,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1396,10 +1380,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.myapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1424,10 +1404,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.myapp-tvOSTests";

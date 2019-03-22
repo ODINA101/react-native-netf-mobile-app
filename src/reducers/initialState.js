@@ -5,7 +5,6 @@ export default {
 		list: {},
 		nowPlayingMovies: {},
 		popularMovies: {},
-		searchResults: {},
-		Series:[]
+		searchResults: {}
 	}
 };

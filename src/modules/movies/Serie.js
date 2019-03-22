@@ -285,7 +285,13 @@ class Serie extends Component {
 			}
 		});
 	}
-
+	checkImdb(data) {
+        if ((parseFloat(data.data_rating).toFixed(1)) !== parseFloat(0.0).toFixed(1)) {
+            return (parseFloat(data.data_rating).toFixed(1));
+        } else {
+            return (null);
+        }
+    }
 	async _onNavigatorEvent(event) {
 		if (event.type === 'NavBarButtonPress') {
 			if (event.id === 'close') {
@@ -303,7 +309,13 @@ let added;
 	added = []
 }
 
+  let poster;
 
+	if(this.props.item.poster) {
+		 poster = this.props.item.poster;
+	}else{
+		poster = "http://staticnet.adjara.com/moviecontent/" + this.props.item.id + "/covers/214x321-" + this.props.item.id + ".jpg";
+	}
 
 		added.push({
 			id:this.props.item.id,
@@ -311,8 +323,9 @@ let added;
 			director:this.props.item.director,
 			description:this.props.item.description,
 			casts:this.state.actors,
-			poster:this.props.item.poster,
+			poster,
 			data_rating:this.props.item.data_rating,
+			imdb:this.checkImdb(this.props.item),
 			title_ge:this.props.item.title_ge,
 			title_en:this.props.item.title_en
 
@@ -371,13 +384,7 @@ let added;
  		 }
   }
 
-	checkImdb(data) {
-        if ((parseFloat(data.data_rating).toFixed(1)) !== parseFloat(0.0).toFixed(1)) {
-            return (data.data_rating);
-        } else {
-            return (null);
-        }
-    }
+
 
 	render() {
 		const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
@@ -439,7 +446,7 @@ let added;
 
 
 
-			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
+			<TouchableOpacity onPress={()=>this.setState({ShowModal:false})} style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
 		<Text style={{color:"#FFF"}} >დახურვა</Text>
 		</TouchableOpacity>
 		<View style={{width:10}}/>

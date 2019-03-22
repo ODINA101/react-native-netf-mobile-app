@@ -38,11 +38,11 @@ class CatMoviesList extends Component {
 
 	_retrieveMoviesList(isRefreshed) {
 
-			axios.get("http://net.adjara.com/Search/SearchResults?ajax=1&searchTags%5B%5D=" + this.props.id +
+			axios.get("http://adjaranet.com/req/jsondata/req.php?reqId=getCollections&id=" + this.props.id +
       "&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=1&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=movies&order%5Bmeta%5D=desc&language=false&country=false&game=0&softs=0&georgians=1&episode=0&trailers=0&tvshow=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&flashgames=0&currentPosition=1&loadedPages%5B%5D=1")
       .then((res) => {
         const data = this.state.list;
-        const newData = res.data.data;
+        const newData = res.data;
 				newData.map((item, index) => data.push(item));
 				const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
 				const dataSource = ds.cloneWithRows(this.state.list);
@@ -51,6 +51,8 @@ class CatMoviesList extends Component {
 					dataSource,
 					isLoading: false
 				});
+   }).catch(err => {
+     alert(err)
    })
 
 		if (isRefreshed && this.setState({ isRefreshing: false }));
@@ -70,11 +72,11 @@ class CatMoviesList extends Component {
 				page = this.state.currentPage + 15;
 			}
 
-			axios.get("http://net.adjara.com/Search/SearchResults?ajax=1&searchTags%5B%5D=" + this.props.id +
-      "&display=15&startYear=1900&endYear=2018&offset=" + page + "&isnew=0&needtags=1&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=movies&order%5Bmeta%5D=desc&language=false&country=false&game=0&softs=0&georgians=1&episode=0&trailers=0&tvshow=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&flashgames=0&currentPosition=1&loadedPages%5B%5D=1")
+			axios.get("http://adjaranet.com/req/jsondata/req.php?reqId=getCollections&id=" + this.props.id +
+                         "&display=15&startYear=1900&endYear=2018&offset=0&isnew=0&needtags=1&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=movies&order%5Bmeta%5D=desc&language=false&country=false&game=0&softs=0&georgians=1&episode=0&trailers=0&tvshow=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&flashgames=0&currentPosition=1&loadedPages%5B%5D=1")
 				.then(res => {
 					const data = this.state.list;
-					const newData = res.data.data;
+					const newData = res.data;
 
 					newData.map((item, index) => data.push(item));
 

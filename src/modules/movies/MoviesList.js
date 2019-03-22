@@ -37,6 +37,21 @@ class MoviesList extends Component {
 	}
 
 	_retrieveMoviesList(isRefreshed) {
+if(this.props.type == "სერიალები ქართულად") {
+
+		this.props.actions.retrieveNowPlayingMovies(this.props.type, (data)=> {
+			//alert(JSON.stringify(data))
+			data = data.data
+				const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+				const dataSource = ds.cloneWithRows(data);
+				this.setState({
+					list: data,
+					dataSource,
+					isLoading: false
+				});
+		})
+}else{
+
 		this.props.actions.retrieveNowPlayingMovies(this.props.type, this.state.currentPage)
 			.then(() => {
 				const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
@@ -47,7 +62,16 @@ class MoviesList extends Component {
 					isLoading: false
 				});
 			});
+}
+
+
+
+
 		if (isRefreshed && this.setState({ isRefreshing: false }));
+
+
+
+
 	}
 
 	_retrieveNextPage(type) {
@@ -63,8 +87,18 @@ class MoviesList extends Component {
 			} else {
 				page = this.state.currentPage + 15;
 			}
+let genLink;
+if(this.props.type == 'სერიალები ქართულად') {
+//alert("serialia")
+	  genLink = "http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=" + page + "&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=1&tvshow=0&flashgames=0"
+}else{
 
-			axios.get("http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=" + page + "&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0")
+	  genLink = "http://net.adjara.com/Search/SearchResults?ajax=1&display=15&startYear=1900&endYear=2018&offset=" + page + "&isnew=0&needtags=0&orderBy=date&order%5Border%5D=desc&order%5Bdata%5D=published&language=georgian&country=false&game=0&softs=0&videos=0&xvideos=0&vvideos=0&dvideos=0&xphotos=0&vphotos=0&dphotos=0&trailers=0&episode=0&tvshow=0&flashgames=0"
+}
+
+
+
+			axios.get(genLink)
 				.then(res => {
 					const data = this.state.list;
 					const newData = res.data.data;
@@ -95,6 +129,10 @@ class MoviesList extends Component {
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+								{
+							id:"love",
+							icon:iconsMap['ios-heart-outline']
+						},
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']
@@ -113,6 +151,10 @@ class MoviesList extends Component {
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+								{
+							id:"love",
+							icon:iconsMap['ios-heart-outline']
+						},
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']
@@ -170,7 +212,7 @@ let navigatorStyle = {};
 
 if (Platform.OS === 'ios') {
 	navigatorStyle = {
-		navBarTranslucent: true,
+		navBarTransucent: true,
 		drawUnderNavBar: true
 	};
 } else {

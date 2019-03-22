@@ -17,13 +17,14 @@ class Drawer extends Component {
 		this._goToMovies = this._goToMovies.bind(this);
 		this._goToFavorites = this._goToFavorites.bind(this);
 		this._openSearch = this._openSearch.bind(this);
+		this._goToSeries = this._goToSeries.bind(this);
 	}
 
 	_openSearch() {
 		this._toggleDrawer();
 		this.props.navigator.showModal({
 			screen: 'movieapp.Search',
-			title: 'Search'
+			title: 'ძიება'
 		});
 	}
 
@@ -33,6 +34,19 @@ class Drawer extends Component {
 			screen: 'movieapp.Movies'
 		});
 	}
+
+
+	_goToSeries() {
+		this._toggleDrawer();
+		this.props.navigator.showModal({
+			screen: 'movieapp.MoviesList',
+			title:'სერიალები',
+			passProps: {
+				type:"სერიალები ქართულად"
+			}
+		});
+	}
+
 
 	_goToFavorites() {
 		this._toggleDrawer();
@@ -75,6 +89,17 @@ class Drawer extends Component {
 								</Text>
 							</View>
 						</TouchableOpacity>
+
+
+						<TouchableOpacity onPress={this._goToSeries}>
+				<View style={styles.drawerListItem}>
+		 			{iconTV}
+					<Text style={styles.drawerListItemText}>
+						სერიალები
+					</Text>
+				</View>
+			</TouchableOpacity>
+
 						<TouchableOpacity onPress={this._goToFavorites}>
 							<View style={styles.drawerListItem}>
 								{iconFav}

@@ -5,8 +5,8 @@ import android.util.Log;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
-import com.masteratul.downloadmanager.ReactNativeDownloadManagerPackage;
 import com.sbugert.rnadmob.RNAdMobPackage;
+import com.masteratul.downloadmanager.ReactNativeDownloadManagerPackage;
 import com.wog.videoplayer.VideoPlayerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -33,6 +33,7 @@ public class MainApplication extends NavigationApplication {
   //   protected List<ReactPackage> getPackages() {
   //     return Arrays.<ReactPackage>asList(
   //         new MainReactPackage(),
+          //
           //  new ReactNativeDownloadManagerPackage(),
           //  new RNAdMobPackage(),
 
@@ -52,8 +53,8 @@ public class MainApplication extends NavigationApplication {
 		new LinearGradientPackage(),
 		new ReactNativeConfigPackage(),
      new VideoPlayerPackage(),
-     new RNAdMobPackage(),
-    new ReactNativeDownloadManagerPackage()
+    new ReactNativeDownloadManagerPackage(),
+    new RNAdMobPackage()
     );
   }
 
@@ -61,5 +62,6 @@ public class MainApplication extends NavigationApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    //CastContext.getSharedInstance(this);
   }
 }

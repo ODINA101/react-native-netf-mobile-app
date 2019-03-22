@@ -21,6 +21,7 @@ class Search extends Component {
 		this.state = {
 			isLoading: true,
 			currentPage: 1,
+			dataSource:new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows([]),
 			searchResults: {
 				results: []
 			},
@@ -36,62 +37,49 @@ class Search extends Component {
 		const query = event.nativeEvent.text;
 		this.setState({ query });
 		if (!query) this.setState({ query: '' });
+  if(query.length > 1) {
+this.setState({
+	dataSource:new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows([])
+},()=> {
 
-		setTimeout(() => {
-			if (query.length) {
 				axios.get(`http://net.adjara.com/Home/quick_search?ajax=1&search=${this.state.query}`)
 					.then(res => {
 						//alert(res.data)
-						const data = [];
-						const newData = res.data.movies.data;
-						const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-						const dataSource = ds.cloneWithRows(res.data.movies.data);
+				//		alert(`http://net.adjara.com/Home/quick_search?ajax=1&search=${this.state.query}`)
+						let data = [];
 
-			 //			newData.map((item, index) => data.push(item));
-                console.log(res.data.data)
+					//	alert(JSON.stringify(res.data.movies.data))
+										if(res.data.movies.data) {
+		        //const newData = res.data.movies.data;
+	         setTimeout(() => {
+						let ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+						let dataSource = ds.cloneWithRows(res.data.movies.data);
 						this.setState({
-							dataSource,
-							isLoading:false
+							dataSource
+						},()=> {
+	     this.setState({isLoading:false})
+
 						});
+		},10)
+
+						}
+
+
 
 
 						//alert(JSON.stringify(res.data))
 					}).catch(err => {
 						console.log('next page', err); // eslint-disable-line
-						alert(err)
+					//	alert(err)
 					});
+})
 
-			}
-		}, 500);
+
+	}
+
 	}
 
 	_retrieveNextPage() {
-		// if (this.state.currentPage !== this.props.searchResults.total_pages) {
-		// 	this.setState({
-		// 		currentPage: this.state.currentPage + 1
-		// 	});
-		// 	let page;
-		// 	if (this.state.currentPage === 1) {
-		// 		page = 2;
-		// 		this.setState({ currentPage: 2 });
-		// 	} else {
-		// 		page = this.state.currentPage + 1;
-		// 	}
-		// 	axios.get(`http://net.adjara.com/Home/quick_search?ajax=1&search=&query=${this.state.query}`)
-		// 		.then(res => {
-		// 			const data = [];
-		// 			const newData = res.data.data;
-		//
-		// 			newData.map((item, index) => data.push(item));
-		//
-		// 			this.setState({
-		// 				dataSource: this.state.dataSource.cloneWithRows(res.data.data)
-		// 			});
-		// 			alert("retived" + this.state.dataSource)
-		// 		}).catch(err => {
-		// 			console.log('next page', err); // eslint-disable-line
-		// 		});
-		// }
 	}
 
 	_viewMovie(movieId,info,des) {
@@ -103,13 +91,17 @@ class Search extends Component {
 				this.props.navigator.showModal({
 		 			screen: 'movieapp.Serie',
 		 			passProps: {
-		 				movieId,
+		 				movieId:info.id,
 		 				item:Object.assign(info,{description:des}),
 						searching:true
 		 			},
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+						{
+							id:"love",
+							icon:iconsMap['ios-heart-outline']
+						},
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']
@@ -129,6 +121,10 @@ class Search extends Component {
 		 			backButtonHidden: true,
 		 			navigatorButtons: {
 		 				rightButtons: [
+							{
+							id:"love",
+							icon:iconsMap['ios-heart-outline']
+						  },
 		 					{
 		 						id: 'close',
 		 						icon: iconsMap['ios-arrow-round-down']

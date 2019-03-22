@@ -1,8 +1,8 @@
 rootProject.name = 'myapp'
-include ':react-native-simple-download-manager'
-project(':react-native-simple-download-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-simple-download-manager/android')
 include ':react-native-admob'
 project(':react-native-admob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-admob/android')
+include ':react-native-simple-download-manager'
+project(':react-native-simple-download-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-simple-download-manager/android')
 include ':react-native-native-video-player'
 project(':react-native-native-video-player').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-native-video-player/android')
 

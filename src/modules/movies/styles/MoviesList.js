@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
 	seperator: {
 		marginTop: 10,
 		backgroundColor: '#8E8E8E'
+	},
+	list:{
+		flexDirection: 'row',
+		flexWrap: 'wrap'
 	}
 });
 

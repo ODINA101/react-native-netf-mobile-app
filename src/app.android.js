@@ -1,7 +1,7 @@
 import React from 'react'; // eslint-disable-line
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-
+import { iconsMap } from './utils/AppIcons';
 import { registerScreens } from './screens';
 import configureStore from './store/configureStore';
 
@@ -30,11 +30,15 @@ Navigation.startSingleScreenApp({
 		screen: 'movieapp.Movies',
 		title: 'ფილმები',
 		navigatorStyle,
+	 
 		leftButtons: [
 			{
 				id: 'sideMenu'
-			}
-		]
+			},
+
+		],
+
+
 	},
 	drawer: {
 		left: {

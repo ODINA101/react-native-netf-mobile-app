@@ -13,7 +13,8 @@ const icons = {
 	'ios-arrow-round-down': [navIconSize],
 	'ios-heart':[navIconSize],
 	'ios-heart-outline':[navIconSize],
-	'ios-close': [40]
+	'ios-close': [30],
+	'ios-search': [30]
 };
 
 const iconsMap = {};
