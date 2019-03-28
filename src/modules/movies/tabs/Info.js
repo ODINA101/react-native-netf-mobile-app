@@ -24,7 +24,7 @@ export default class Info extends Component {
 								აღწერა
 							</Text>
 							<Text style={styles.overviewText}>
-							{this.props.item.description}
+							{this.props.description}
 							</Text>
 						</View>
 

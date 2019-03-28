@@ -64,7 +64,8 @@ class Movie extends Component {
 			selectedQual:"",
 			addedToFavorites:false,
 			AsyncStorageData:[],
-			downloading:false
+			downloading:false,
+			des:props.item.description
 
 		};
 
@@ -107,9 +108,6 @@ class Movie extends Component {
      }
 
    }
-
-
-
 
 	_retrieveDetails(isRefreshed) {
 		// this.props.actions.retrieveMovieDetails(this.props.movieId)
@@ -171,7 +169,7 @@ class Movie extends Component {
 											this.setState({Directed:director[0]})
 
 										}
-										this.setState({genres})
+										this.setState({genres,des:res.desc[0]})
 										fetch(
 			     		"http://net.adjara.com/req/jsondata/req.php?id=" + this.props.item.id +
 				     	"&reqId=getLangAndHd"
@@ -358,9 +356,6 @@ async _onNavigatorEvent(event) {
   added = JSON.stringify(added)
 
      this._storeData("favorites",added)
-
-
-
 
 			 this.props.navigator.setButtons({
 				 rightButtons:[
@@ -552,7 +547,7 @@ async _onNavigatorEvent(event) {
 									style={styles.tabBar}
 								/>
 							)}>
-							<Info tabLabel="INFO" item={item} director={this.state.Directed} />
+							<Info tabLabel="INFO" item={item} description={this.state.des} director={this.state.Directed} />
 							<Casts tabLabel="CASTS"  actors={this.state.actors} getTabHeight={this._getTabHeight} />
 							<Trailers tabLabel="TRAILERS" item={this.props.item} youtubeVideos={this.state.youtubeVideos} openYoutube={this._openYoutube} getTabHeight={this._getTabHeight} />
 						</ScrollableTabView>

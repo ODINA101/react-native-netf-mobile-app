@@ -5,6 +5,7 @@ import {
 	View,
 	Image,
 	TouchableOpacity,
+	AsyncStorage
 } from 'react-native';
 import  { convertStringToNumber } from 'convert-string-to-number'
 import styles from './styles/Casts';
@@ -29,7 +30,9 @@ constructor(props) {
 		selectedLang:"",
 		ShowModal:false,
 		url:props.link,
-		serieI:0
+		serieI:0,
+		selectedSerieId:null,
+		selectedSznId:null
 	}
 
   let szns = [];
@@ -37,8 +40,41 @@ constructor(props) {
 		 szns.push({value:("სეზონი " + (ind+1))})
 	})
 
+
+
+
+this._retrieveData = this._retrieveData.bind(this)
  this.state.seasons = szns
+ this._retrieveData()
 }
+
+
+async _retrieveData()  {
+ try {
+    const value = await AsyncStorage.getItem(('SelectedSerie'+this.props.id));
+    if (value !== null) {
+      // We have data!!
+			this.setState({selectedSerieId:value});
+    }else{
+		}
+  } catch (error) {
+		alert(error)
+  }
+
+	try {
+     const value2 = await AsyncStorage.getItem(('SelectedSzn'+this.props.id));
+     if (value2 !== null) {
+       // We have data!!
+ 			this.setState({selected:value2,selectedSznId:value2});
+			this.getSeason(value2)
+     }else{
+			//alert(value2)
+ 		}
+   } catch (error) {
+ 		//alert(error)
+   }
+};
+
 getNum(num) {
 	 if (num < 9) {
 		 return ("0" + (num+1)).toString()
@@ -54,7 +90,24 @@ getq(data) {
 	 }
  }
 
-playSerie(lang,qual,serieI) {
+async playSerie(lang,qual,serieI) {
+
+//alert('SelectedSerie'+this.props.id)
+
+
+	try {
+    await AsyncStorage.setItem(('SelectedSerie'+this.props.id), serieI.toString());
+		this.setState({selectedSerieId:serieI,selectedSznId:this.state.selected})
+  } catch (error) {
+    // Error saving data
+  }
+
+		 	try {
+		     await AsyncStorage.setItem(('SelectedSzn'+this.props.id),this.state.selected);
+		   } catch (error) {
+		     // Error saving data
+		   }
+
 // alert(JSON.stringify(lang))
 // alert(JSON.stringify(qual))
 var noption = lang.split(",")
@@ -73,7 +126,6 @@ let noqures = [];
 	this.setState({serieI,options:nores,selectedLang:noption[0],Quality_Options:noqures,selectedQual:noquality[0]},() => {
 		this.setState({ShowModal:true})
 	})
-
 
 
 
@@ -106,11 +158,22 @@ getSeason(value) {
 		 })
 	 this.setState({series: datiko, isLoading: false})
  }
-onValueChange(value) {
+async onValueChange(value) {
 //	alert(Number.parseInt(value[value.length-1]))
-   this.setState({selected: value});
+
+
+	 this.setState({selected: value});
 	//value = Number.parseInt(value[value.length-1]);
 	 this.getSeason(value)
+
+		//
+	 	// try {
+	  //    await AsyncStorage.setItem(('SelectedSzn'+this.props.id),value);
+	  //  } catch (error) {
+	  //    // Error saving data
+	  //  }
+
+
 	//  if(this.state.savedSelectedIndex) {
 	// if(this.state.savedSelectedIndexSzn) {
 	//  this.save(value,this.state.savedSelectedIndex,this.state.savedSelectedIndexSzn)
@@ -142,12 +205,29 @@ onValueChange(value) {
 				<View style={{marginTop:30}}/>
 				{
 				this.state.series.map((item,ind) => (
+
 						<TouchableOpacity onPress={()=>this.playSerie(item.lang,item.quality,ind)} key={item.id} style={styles.castContainer}>
+						{
+							ind==this.state.selectedSerieId&&this.state.selectedSznId==this.state.selected?(
+							<View style={[styles.characterContainer,{backgroundColor:"#F5F5F5"}]}>
+								<Text style={[styles.characterName,{color:"#000"}]}>
+									({ind+1}) {item.name}
+								</Text>
+							</View>
+						):(
 							<View style={styles.characterContainer}>
 								<Text style={styles.characterName}>
 									({ind+1}) {item.name}
 								</Text>
 							</View>
+
+						)
+						}
+
+
+
+
+
 						</TouchableOpacity>
 					))
 				}
@@ -178,7 +258,6 @@ onValueChange(value) {
 	      <View style={{marginTop:50,flexDirection: 'row'}}>
 
 
-
 				<TouchableOpacity onPress={()=>this.setState({ShowModal:false})}style={{height:30,width:110,backgroundColor:"#2B2C3D",borderRadius:25,justifyContent: 'center',alignItems: 'center'}}>
 			<Text style={{color:"#FFF"}} >დახურვა</Text>
 			</TouchableOpacity>
@@ -188,8 +267,6 @@ onValueChange(value) {
 					backgroundColor:"#FFF",borderRadius:5,justifyContent: 'center',alignItems: 'center'}}>
 				<Text style={{color:"#2B2C3D"}}>კარგი</Text>
 				</TouchableOpacity>
-
-
 
 
      </View>

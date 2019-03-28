@@ -70,7 +70,8 @@ class Serie extends Component {
 			selectedQual:"",
 			seasons: [],
 			addedToFavorites:false,
- 			AsyncStorageData:[]
+ 			AsyncStorageData:[],
+			des:this.props.item.description
 		};
 
 		this._getTabHeight = this._getTabHeight.bind(this);
@@ -157,7 +158,7 @@ class Serie extends Component {
 
 
 	const myarr = Object.keys(res).map(i => res[i]);
-	this.setState({ link: myarr[myarr.length - 1] });
+	this.setState({ link: myarr[myarr.length - 1] ,des:res.desc});
    //alert(myarr[myarr.length - 1])
 
 	myarr.forEach(item => {
@@ -498,7 +499,7 @@ let added;
 									style={styles.tabBar}
 								/>
 							)}>
-							<Info tabLabel="INFO" item={item} director={this.state.Directed} />
+							<Info tabLabel="INFO" item={item} description={this.state.des} director={this.state.Directed} />
 							<Series tabLabel="SERIES"  id={this.props.item.id} link={this.state.link} seasons={this.state.seasons} series={this.state.series} getTabHeight={this._getTabHeight} />
 							<Trailers tabLabel="TRAILERS" item={this.props.item} youtubeVideos={this.state.youtubeVideos} openYoutube={this._openYoutube} getTabHeight={this._getTabHeight} />
 						</ScrollableTabView>

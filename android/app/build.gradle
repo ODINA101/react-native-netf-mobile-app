@@ -93,7 +93,7 @@ buildToolsVersion "25.0.1"
         applicationId "irakli.samniashvili.app"
         minSdkVersion 16
          versionCode 50266
-         targetSdkVersion 26
+         targetSdkVersion 22
         versionName "76"
         multiDexEnabled true
         ndk {
