@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Swiper from 'react-native-swiper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import * as moviesActions from './movies.actions';
 import CardOne from './components/CardOne';
 import CardTwo from './components/CardTwo';
@@ -21,7 +20,7 @@ import styles from './styles/Movies';
 import { iconsMap } from '../../utils/AppIcons';
 import axios from "axios"
 import List from "./categories"
-
+import InAppBilling from "react-native-billing";
 
 import {
   AdMobBanner,
@@ -51,7 +50,8 @@ class Movies extends Component {
 		}
 		});
 		AdMobInterstitial.setAdUnitID('ca-app-pub-6370427711797263/7435578378');
-		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+
+
 //alert(List)
  this.props.navigator.setButtons({leftButtons:[{id:'sideMenu'}],rightButtons:[
 	 {
@@ -64,6 +64,9 @@ class Movies extends Component {
 
 	componentWillMount() {
 		this._retrieveMovies();
+		setTimeout(() => {
+			 this.checkSubscription()
+		},1000)
 	}
 
 
@@ -73,9 +76,30 @@ class Movies extends Component {
 		 title: 'ძიება'
 	 });
 
+
+
  }
 
 
+
+ async checkSubscription() {
+     try {
+     await InAppBilling.open();
+     // If subscriptions/products are updated server-side you
+     // will have to update cache with loadOwnedPurchasesFromGoogle()
+     await InAppBilling.loadOwnedPurchasesFromGoogle();
+     const isSubscribed = await InAppBilling.isSubscribed("noads597")
+  //   alert("Customer subscribed: " + isSubscribed);
+	    if(!isSubscribed) {
+				AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+			}
+
+   } catch (err) {
+     console.log(err);
+   } finally {
+     await InAppBilling.close();
+   }
+ }
 	_retrieveMovies(isRefreshed) {
 
 		this.props.actions.retrieveNowPlayingMovies("test",(data) => {
@@ -87,10 +111,7 @@ class Movies extends Component {
 			} catch(e) {
 			//	alert(e)
 			}
-
-
 			})
-
 		});
 
    axios.get("http://adjaranet.com/req/jsondata/req.php?reqId=getCollections")
@@ -140,9 +161,7 @@ class Movies extends Component {
 	}
 
 	_viewCat(id,title,isCollection) {
-
 		if(isCollection) {
-
 		this.props.navigator.showModal({
 			title,
 			screen: 'movieapp.ColMoviesList',
@@ -162,9 +181,7 @@ class Movies extends Component {
 			},
 		 	backButtonHidden:false,
 		});
-
 		}
-
 	}
 
 	_viewColCat() {
@@ -339,10 +356,6 @@ class Movies extends Component {
 							<CardTwo key={info.id} info={info} viewMovie={() => this._viewMovie(info.id,info)} />
 						))}
 					</ScrollView>
-
-
-
-
 									<View style={styles.listHeading}>
 									<Text style={styles.listHeadingLeft}>პრემიერა</Text>
 									<TouchableOpacity>

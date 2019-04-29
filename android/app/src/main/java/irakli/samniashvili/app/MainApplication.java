@@ -5,6 +5,7 @@ import android.util.Log;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.Billing.InAppBillingBridgePackage;
 import com.sbugert.rnadmob.RNAdMobPackage;
 import com.masteratul.downloadmanager.ReactNativeDownloadManagerPackage;
 import com.wog.videoplayer.VideoPlayerPackage;
@@ -54,14 +55,15 @@ public class MainApplication extends NavigationApplication {
 		new ReactNativeConfigPackage(),
      new VideoPlayerPackage(),
     new ReactNativeDownloadManagerPackage(),
-    new RNAdMobPackage()
+    new RNAdMobPackage(),
+    new InAppBillingBridgePackage()
     );
   }
 
   @Override
   public void onCreate() {
     super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
+    //SoLoader.init(this, /* native exopackage */ false);
     //CastContext.getSharedInstance(this);
   }
 }

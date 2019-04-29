@@ -31,7 +31,14 @@ import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api'
 	const apiKey = '9d2bff12ed955c7f1f74b83187f188ae'
 	import Modal from "react-native-modal";
 	import { iconsMap } from '../../utils/AppIcons';
+	import InAppBilling from "react-native-billing";
 
+	import {
+	  AdMobBanner,
+	  AdMobInterstitial,
+	  PublisherBanner,
+	  AdMobRewarded,
+	} from 'react-native-admob'
 var seasons = [];
 var szn = [];
 var qualitiesObjs = [];
@@ -82,11 +89,29 @@ class Serie extends Component {
 		this._viewMovie = this._viewMovie.bind(this);
 		this._openYoutube = this._openYoutube.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
+		this.checkSubscription()
 	}
 
 	componentWillMount() {
 		this._retrieveDetails();
 
+	}
+	async checkSubscription() {
+			try {
+			await InAppBilling.open();
+			// If subscriptions/products are updated server-side you
+			// will have to update cache with loadOwnedPurchasesFromGoogle()
+			await InAppBilling.loadOwnedPurchasesFromGoogle();
+			const isSubscribed = await InAppBilling.isSubscribed("noads597")
+	 //   console.log("Customer subscribed: ", isSubscribed);
+	 if(!isSubscribed) {
+		 AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+	 }
+		} catch (err) {
+			console.log(err);
+		} finally {
+			await InAppBilling.close();
+		}
 	}
 
 	getq(data) {

@@ -92,9 +92,9 @@ buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "irakli.samniashvili.app"
         minSdkVersion 16
-        versionCode 50269
-        targetSdkVersion 26
-        versionName "79"
+        versionCode 50268
+        targetSdkVersion 22
+        versionName "78"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"

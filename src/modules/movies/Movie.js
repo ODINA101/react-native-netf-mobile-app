@@ -29,6 +29,12 @@ import VideoPlayer from "react-native-native-video-player"
 import { TMDB_IMG_URL, YOUTUBE_API_KEY, YOUTUBE_URL } from '../../constants/api';
 import { iconsMap } from '../../utils/AppIcons';
 import downloadManager  from 'react-native-simple-download-manager';
+import InAppBilling from "react-native-billing";
+
+
+
+
+
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -37,6 +43,7 @@ import {
 } from 'react-native-admob'
 	const apiKey = '9d2bff12ed955c7f1f74b83187f188ae'
 	import Modal from "react-native-modal";
+
 class Movie extends Component {
 	constructor(props) {
 		super(props);
@@ -66,9 +73,7 @@ class Movie extends Component {
 			AsyncStorageData:[],
 			downloading:false,
 			des:props.item.description
-
 		};
-
 		this._getTabHeight = this._getTabHeight.bind(this);
 		this._onChangeTab = this._onChangeTab.bind(this);
 		this._onContentSizeChange = this._onContentSizeChange.bind(this);
@@ -78,9 +83,8 @@ class Movie extends Component {
 		this._openYoutube = this._openYoutube.bind(this);
 		this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
 
-		AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
 
-
+this.checkSubscription()
 
 
 
@@ -88,7 +92,23 @@ class Movie extends Component {
 
 	}
 
-
+	async checkSubscription() {
+	    try {
+	    await InAppBilling.open();
+	    // If subscriptions/products are updated server-side you
+	    // will have to update cache with loadOwnedPurchasesFromGoogle()
+	    await InAppBilling.loadOwnedPurchasesFromGoogle();
+	    const isSubscribed = await InAppBilling.isSubscribed("noads597")
+	 //   console.log("Customer subscribed: ", isSubscribed);
+	 if(!isSubscribed) {
+		 AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+	 }
+	  } catch (err) {
+	    console.log(err);
+	  } finally {
+	    await InAppBilling.close();
+	  }
+	}
 
 
 	componentWillMount() {
@@ -183,19 +203,15 @@ class Movie extends Component {
 
 							              var noption = info[0].lang.split(",")
 														var noquality =  info[0].quality.split(",")
-													//	alert(JSON.stringify(noption))
+												  	//	alert(JSON.stringify(noption))
                             let nores = [];
                             let noqures = [];
-
-
                               noption.map((item) => {
 																nores.push({label:item,value:item})
 															})
 															noquality.map((item) => {
 	                             noqures.push({label:this.getq(item),value:item})
                               })
-
-
 							                 this.setState({QOptions: nores, link: info[0].url,selectedLang:noption[0],Quality_Options:noqures,selectedQual:noquality[0]})
 							                 Object
 							                 .keys(res.cast)
@@ -333,13 +349,11 @@ async _onNavigatorEvent(event) {
 
  var value = await AsyncStorage.getItem('favorites');
  let added;
-
   if(value !== null) {
    added = JSON.parse(value)
- }else{
- 	added = []
- }
-
+	 }else{
+	 	added = []
+	 }
    added.push({
 		 id:this.props.item.id,
 		 release_date:this.props.item.release_date,
@@ -352,10 +366,8 @@ async _onNavigatorEvent(event) {
 		 title_ge:this.props.item.title_ge,
 		 title_en:this.props.item.title_en
 	 })
-
   added = JSON.stringify(added)
-
-     this._storeData("favorites",added)
+  this._storeData("favorites",added)
 
 			 this.props.navigator.setButtons({
 				 rightButtons:[
